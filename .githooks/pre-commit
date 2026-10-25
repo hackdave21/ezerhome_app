@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+
+staged=$(git diff --cached --name-only --diff-filter=ACMR -- '*.php')
+
+if [ -z "$staged" ]; then
+    exit 0
+fi
+
+printf '%s\n' "$staged" | while IFS= read -r file; do
+    if [ -f "$file" ]; then
+        php vendor/bin/pint "$file"
+    fi
+done
+
+printf '%s\n' "$staged" | while IFS= read -r file; do
+    if [ -f "$file" ]; then
+        git add -- "$file"
+    fi
+done

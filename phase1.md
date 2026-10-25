@@ -22,7 +22,7 @@
 11. [Étape 1.7 — Demande d'écoute et affectation manuelle (Lot 2)](#étape-17--demande-découte-et-affectation-manuelle-lot-2)
 12. [Étape 1.8 — Volet Assistance et espace Comité (Lot 3)](#étape-18--volet-assistance-et-espace-comité-lot-3)
 13. [Étape 1.9 — Volet Dons et paiement manuel (Lot 4)](#étape-19--volet-dons-et-paiement-manuel-lot-4)
-14. [Étape 1.10 — Back-office Admin (Filament)](#étape-110--back-office-admin-filament)
+14. [Étape 1.10 — Back-office Admin](#étape-110--back-office-admin)
 15. [Étape 1.11 — Sécurité et tests de la phase 1](#étape-111--sécurité-et-tests-de-la-phase-1)
 16. [Étape 1.12 — Préparation du déploiement phase 1](#étape-112--préparation-du-déploiement-phase-1)
 17. [Annexes phase 1](#annexes-phase-1)
@@ -62,12 +62,12 @@ PHASE 1
 1.7  Demande d'écoute              │
 1.8  Assistance + Comité           │
 1.9  Dons + paiement manuel        │
-1.10 Back-office Filament          │
+1.10 Back-office Admin             │
 1.11 Sécurité + tests              │
 1.12 Déploiement phase 1 ──────────┘
 ```
 
-> **Si le calendrier est serré** (lots 2 à 4 en ~2 semaines) : décaler le **2FA** et le **back-office Filament avancé** après le lancement. Ne **jamais** décaler : la charte signée, la sécurité de base et le cloisonnement des rôles.
+> **Si le calendrier est serré** (lots 2 à 4 en ~2 semaines) : décaler le **2FA** et le **back-office Admin avancé** après le lancement. Ne **jamais** décaler : la charte signée, la sécurité de base et le cloisonnement des rôles.
 
 ---
 
@@ -170,9 +170,6 @@ composer require spatie/laravel-activitylog
 composer require spatie/laravel-medialibrary
 composer require intervention/image
 
-# Back-office
-composer require filament/filament:"^3.2" -W
-
 # 2FA (si non couvert par Fortify) / PDF / qualité
 composer require pragmarx/google2fa-laravel      # optionnel
 composer require barryvdh/laravel-dompdf          # reçus PDF (utilisé plus tard)
@@ -188,7 +185,6 @@ php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServicePr
 php artisan vendor:publish --provider="Laravel\Fortify\FortifyServiceProvider"
 php artisan queue:table
 php artisan session:table
-php artisan filament:install --panels
 ```
 
 ### 1.0.4 Mettre en place la qualité et la CI
@@ -203,6 +199,7 @@ php artisan filament:install --panels
 - Créer l'environnement **staging** protégé et activer **HTTPS** (Let's Encrypt).
 - Accès SSH **par clé uniquement**, pare-feu (ports 22/80/443), mises à jour de sécurité automatiques.
 - Choisir l'hébergement après avis juridique si possible (Togo ou pays offrant des garanties équivalentes).
+- Fichiers fournis : `deploy/nginx/`, `deploy/scripts/`, `.env.staging.example` — voir [docs/STAGING.md](./docs/STAGING.md).
 
 ### ✅ Critères de sortie de l'étape 1.0
 
@@ -651,9 +648,9 @@ Champs : nom et prénoms, contact (**téléphone/WhatsApp obligatoire**, e-mail 
 
 Générer `ASS-AAAA-NNNNN` (ex. `ASS-2026-00042`) via un service avec compteur annuel **dans une transaction** (éviter les doublons). Affiché à l'écran et envoyé par SMS/WhatsApp/e-mail.
 
-### 1.8.4 Espace Comité (Filament)
+### 1.8.4 Espace Comité
 
-Créer une ressource Filament `AssistanceRequestResource` dans un panel *Comité* (ou dans le panel Admin avec accès conditionné) :
+Intégrer l'espace Comité au back-office existant (section dédiée, accès conditionné au rôle `comite`) :
 
 - Liste **filtrable** (statut, catégorie, période) + recherche.
 - Fiche de la demande, **notes internes**, **historique** (`assistance_events`).
@@ -764,19 +761,19 @@ Page éditable via le CMS (étape 1.2.2).
 
 ---
 
-## Étape 1.10 — Back-office Admin (Filament)
+## Étape 1.10 — Back-office Admin
 
-Panel `/admin` (protégé : rôles + 2FA + éventuellement restriction IP).
+Le design du back-office est **déjà fourni** : l'intégrer dans l'application (ne pas le recréer). Espace `/admin` (protégé : rôles + 2FA + éventuellement restriction IP).
 
-### 1.10.1 Panels et accès
+### 1.10.1 Accès et cloisonnement
 
-- Panel **Admin** : accès réservé au rôle `admin`.
-- Panel (ou section) **Comité** : accès `comite` limité à l'assistance et à la médiathèque *assistance*.
-- `canAccessPanel()` du modèle `User` vérifie rôle + statut `active` + 2FA confirmé.
+- Espace **Admin** : accès réservé au rôle `admin`.
+- Espace (ou section) **Comité** : accès `comite` limité à l'assistance et à la médiathèque *assistance*.
+- L'accès est contrôlé par un middleware / une Policy vérifiant rôle + statut `active` + 2FA confirmé.
 
-### 1.10.2 Ressources Filament de la phase 1
+### 1.10.2 Écrans du back-office (phase 1)
 
-| Ressource | Contenu |
+| Écran | Contenu |
 |---|---|
 | Tableau de bord | Demandes d'écoute en attente, assistance en cours, paiements à confirmer, dons du mois |
 | Utilisateurs | Recherche, rôles, suspension/réactivation (avec motif) |
@@ -948,7 +945,7 @@ git push origin main --tags
 
 ### ✅ FIN DE LA PHASE 1 — Livrables
 
-Site public complet · comptes/rôles/2FA · chartes signées · médiathèque · organigramme · partenaires · demande d'écoute + affectation manuelle · assistance + Comité · dons avec confirmation manuelle · back-office Filament · audit · sauvegardes · monitoring.
+Site public complet · comptes/rôles/2FA · chartes signées · médiathèque · organigramme · partenaires · demande d'écoute + affectation manuelle · assistance + Comité · dons avec confirmation manuelle · back-office Admin · audit · sauvegardes · monitoring.
 
 ---
 
@@ -961,7 +958,6 @@ ezer-home/
 ├── app/
 │   ├── Actions/               # Logique métier (actions de la phase 1)
 │   ├── Enums/                 # UserStatus, ListeningRequestStatus, PaymentStatus, ...
-│   ├── Filament/              # Resources Admin & Comité
 │   ├── Http/Middleware/       # EnsureTwoFactorEnabled, EnsureListeningCharterSigned, SecurityHeaders
 │   ├── Jobs/                  # ProcessMedia, notifications, exports
 │   ├── Livewire/              # Composants (MediaUploader, formulaires, ...)
