@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'username' => 'email',
+    'username' => 'identifier',
 
     'email' => 'email',
 
@@ -73,7 +73,7 @@ return [
     |
     */
 
-    'home' => '/home',
+    'home' => '/espace',
 
     /*
     |--------------------------------------------------------------------------
@@ -162,19 +162,11 @@ return [
     */
 
     'features' => [
-        Features::registration(),
-        Features::resetPasswords(),
-        // Features::emailVerification(),
-        Features::updateProfileInformation(),
-        Features::updatePasswords(),
+        // Inscription, réinitialisation du mot de passe et connexion par code sont gérés par
+        // les contrôleurs de l'application (identifiant téléphone ou e-mail, codes à usage unique).
         Features::twoFactorAuthentication([
             'confirm' => true,
-            'confirmPassword' => true,
-            // 'window' => 0,
-        ]),
-        Features::passkeys([
-            'confirmPassword' => true,
+            'confirmPassword' => false,
         ]),
     ],
-
 ];

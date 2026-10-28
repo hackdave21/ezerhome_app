@@ -1,6 +1,13 @@
 <?php
 
+use App\Http\Controllers\Auth\AccountStatusController;
+use App\Http\Controllers\Auth\OtpController;
+use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\TwoFactorSetupController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\EspaceController;
+use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +29,50 @@ Route::post('/contact', [ContactController::class, 'send'])->middleware('throttl
 Route::get('/{slug}', [SiteController::class, 'legal'])
     ->whereIn('slug', array_keys(SiteController::LEGAL))
     ->name('legal');
+
+/*
+|--------------------------------------------------------------------------
+| Authentification (connexion et double authentification : routes Fortify)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [RegisterController::class, 'show'])->name('register');
+    Route::post('/register', [RegisterController::class, 'store'])->middleware('throttle:otp');
+
+    Route::post('/connexion/code', [OtpController::class, 'requestLoginCode'])->middleware('throttle:otp')->name('login.code');
+    Route::get('/connexion/lien', [OtpController::class, 'magicSent'])->name('login.magic.sent');
+    Route::post('/connexion/lien/renvoyer', [OtpController::class, 'resendMagic'])->middleware('throttle:otp')->name('login.magic.resend');
+    Route::get('/connexion/lien/{user}/{token}', [OtpController::class, 'magicLogin'])
+        ->middleware(['signed', 'throttle:10,1'])->name('login.magic');
+
+    Route::get('/mot-de-passe-oublie', [PasswordResetController::class, 'request'])->name('password.request');
+    Route::post('/mot-de-passe-oublie', [PasswordResetController::class, 'send'])->middleware('throttle:otp')->name('password.send');
+    Route::get('/nouveau-mot-de-passe', [PasswordResetController::class, 'form'])->name('password.new');
+    Route::post('/nouveau-mot-de-passe', [PasswordResetController::class, 'update'])->middleware('throttle:otp')->name('password.update');
+
+    Route::get('/compte-desactive', [AccountStatusController::class, 'deactivated'])->name('account.deactivated');
+});
+
+// Saisie du code : vérification, connexion, réinitialisation (visiteur) et suppression de compte (connecté).
+Route::get('/verification', [OtpController::class, 'show'])->name('otp.show');
+Route::post('/verification', [OtpController::class, 'verify'])->middleware('throttle:otp')->name('otp.verify');
+Route::post('/verification/renvoyer', [OtpController::class, 'resend'])->middleware('throttle:otp')->name('otp.resend');
+
+Route::middleware(['auth', 'auth.session', 'account.active'])->group(function () {
+    Route::get('/double-authentification', [TwoFactorSetupController::class, 'show'])->name('two-factor.setup');
+    Route::post('/double-authentification', [TwoFactorSetupController::class, 'confirm'])->name('two-factor.confirm');
+    Route::get('/double-authentification/codes', [TwoFactorSetupController::class, 'codes'])->name('two-factor.codes');
+    Route::post('/double-authentification/codes', [TwoFactorSetupController::class, 'regenerate'])->name('two-factor.regenerate');
+    Route::delete('/double-authentification', [TwoFactorSetupController::class, 'disable'])->name('two-factor.disable');
+
+    // Espace personnel : 2FA obligatoire pour thérapeute, formateur/coach, comité et admin.
+    Route::middleware('two-factor.required')->prefix('espace')->group(function () {
+        Route::get('/', [EspaceController::class, 'index'])->name('espace');
+        Route::get('/profil', [EspaceController::class, 'profil'])->name('espace.profil');
+        Route::get('/{onglet}', [EspaceController::class, 'bientot'])->whereIn('onglet', ['ecoute', 'formations', 'coaching'])->name('espace.onglet');
+        Route::post('/appareils/deconnecter', [EspaceController::class, 'logoutOthers'])->name('espace.logout-others');
+        Route::post('/export', [PrivacyController::class, 'requestExport'])->name('espace.export');
+        Route::get('/export/{export}', [PrivacyController::class, 'download'])->name('espace.export.download');
+        Route::post('/suppression', [PrivacyController::class, 'requestDeletion'])->name('espace.suppression');
+    });
+});

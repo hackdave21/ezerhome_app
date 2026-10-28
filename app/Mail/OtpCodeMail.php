@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Mail;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Queue\SerializesModels;
+
+class OtpCodeMail extends Mailable implements ShouldQueue
+{
+    use Queueable, SerializesModels;
+
+    public function __construct(public string $code, public string $purpose) {}
+
+    public function envelope(): Envelope
+    {
+        return new Envelope(subject: 'Votre code Ezer Home');
+    }
+
+    public function content(): Content
+    {
+        return new Content(text: 'emails.otp', with: ['minutes' => config('otp.ttl')]);
+    }
+}
