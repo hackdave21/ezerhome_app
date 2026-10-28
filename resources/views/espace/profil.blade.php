@@ -25,9 +25,17 @@
             <section aria-labelledby="pr-charte" class="flex flex-col gap-1.5">
                 <div class="flex flex-wrap items-center justify-between gap-3">
                     <h2 id="pr-charte" class="text-xl font-semibold">Charte d'écoute</h2>
-                    <a href="{{ url('/charte') }}" class="inline-flex items-center min-h-[44px] font-semibold text-ezer-green hover:underline">Relire la charte</a>
+                    <a href="{{ route('espace.charte') }}" class="inline-flex items-center min-h-[44px] font-semibold text-ezer-green hover:underline">{{ $charte || ! $user->can('charter.sign') ? 'Relire la charte' : 'Lire et signer la charte' }}</a>
                 </div>
-                <p class="text-[15px] text-ezer-muted">Pas encore signée.</p>
+                <p class="text-[15px] text-ezer-muted">
+                    @if ($charte)
+                        Signée le {{ $charte->signed_at->locale('fr')->translatedFormat('j F Y') }} · version {{ $charte->charter->version }}
+                    @elseif ($charteVersion && $user->can('charter.sign'))
+                        À signer (version {{ $charteVersion->version }}) avant votre première demande d'écoute.
+                    @else
+                        Non concernée.
+                    @endif
+                </p>
             </section>
 
             <!-- SÉCURITÉ -->

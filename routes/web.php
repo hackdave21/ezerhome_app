@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\TwoFactorSetupController;
+use App\Http\Controllers\CharterController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EspaceController;
 use App\Http\Controllers\PrivacyController;
@@ -18,6 +19,7 @@ Route::view('/formation', 'site.formations')->name('formation');
 Route::view('/formation/{slug}', 'site.formation-detail')->name('formation.show');
 Route::view('/coaching', 'site.coaching')->name('coaching');
 Route::view('/coaching/{slug}', 'site.coaching-detail')->name('coaching.show');
+Route::get('/charte', [CharterController::class, 'publique'])->name('charte');
 Route::view('/equipe', 'site.equipe')->name('equipe');
 Route::view('/partenaires', 'site.partenaires')->name('partenaires');
 Route::get('/a-quoi-servent-les-dons', [SiteController::class, 'usageDons'])->name('usage-dons');
@@ -69,6 +71,9 @@ Route::middleware(['auth', 'auth.session', 'account.active'])->group(function ()
     Route::middleware('two-factor.required')->prefix('espace')->group(function () {
         Route::get('/', [EspaceController::class, 'index'])->name('espace');
         Route::get('/profil', [EspaceController::class, 'profil'])->name('espace.profil');
+        Route::get('/charte', [CharterController::class, 'show'])->name('espace.charte');
+        Route::post('/charte', [CharterController::class, 'sign'])->name('espace.charte.sign');
+        Route::get('/charte/pdf', [CharterController::class, 'pdf'])->name('espace.charte.pdf');
         Route::get('/{onglet}', [EspaceController::class, 'bientot'])->whereIn('onglet', ['ecoute', 'formations', 'coaching'])->name('espace.onglet');
         Route::post('/appareils/deconnecter', [EspaceController::class, 'logoutOthers'])->name('espace.logout-others');
         Route::post('/export', [PrivacyController::class, 'requestExport'])->name('espace.export');

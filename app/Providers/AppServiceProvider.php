@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Listeners\AssignDefaultRole;
+use App\Models\User;
 use App\Policies\MediaPolicy;
 use App\Services\Otp\LogSmsOtpSender;
 use App\Services\Otp\OtpSender;
@@ -27,5 +28,8 @@ class AppServiceProvider extends ServiceProvider
         // Le modèle Media vient du package : on déclare sa policy explicitement.
         // (ListeningRequestPolicy et AssistanceRequestPolicy arrivent avec leurs modèles, étapes 1.4 et 1.8.)
         Gate::policy(Media::class, MediaPolicy::class);
+
+        // Défense en profondeur du verrou « charte signée » : à appeler aussi depuis les policies d'écoute.
+        Gate::define('request-listening', fn (User $user) => $user->can('listening.request') && $user->hasSignedCurrentCharter());
     }
 }

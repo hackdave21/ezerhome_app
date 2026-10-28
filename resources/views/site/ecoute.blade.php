@@ -123,7 +123,7 @@
                         <span>L'écoute ne remplace ni un suivi médical, ni un service d'urgence.</span>
                     </li>
                 </ul>
-                <a href="{{ url('/charte') }}" class="self-start font-semibold py-2.5 text-ezer-green hover:underline">Lire la charte complète</a>
+                <a href="{{ route('charte') }}" class="self-start font-semibold py-2.5 text-ezer-green hover:underline">Lire la charte complète</a>
             </section>
 
             <!-- URGENCE -->

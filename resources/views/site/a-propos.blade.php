@@ -179,7 +179,7 @@
             <section aria-labelledby="ap-charte" class="bg-ezer-green-light rounded-ezer p-5 lg:p-8 flex flex-col gap-4">
                 <h2 id="ap-charte" class="font-cooper font-normal text-2xl lg:text-3xl">Notre charte d'écoute</h2>
                 <p>Toute personne accompagnée la signe, et toute l'équipe s'engage à la respecter. Elle est publique : chacun peut la lire.</p>
-                <a href="{{ url('/charte') }}" class="self-start inline-flex items-center justify-center min-h-[52px] px-6 rounded-ezer border-2 border-ezer-green bg-white text-ezer-green font-semibold hover:bg-ezer-green-pale transition-colors">Lire la charte complète</a>
+                <a href="{{ route('charte') }}" class="self-start inline-flex items-center justify-center min-h-[52px] px-6 rounded-ezer border-2 border-ezer-green bg-white text-ezer-green font-semibold hover:bg-ezer-green-pale transition-colors">Lire la charte complète</a>
                 <ul class="flex flex-col gap-3 list-none">
                     <li class="bg-white rounded-ezer p-4 flex items-start gap-2.5">
                         <svg aria-hidden="true" class="shrink-0 mt-0.5 w-[18px] h-[18px] text-ezer-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>

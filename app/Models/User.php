@@ -99,4 +99,19 @@ class User extends Authenticatable
 
         $this->forceFill(['remember_token' => Str::random(60)])->save();
     }
+
+    /** Signature de la version en vigueur de la charte (null si absente ou si une nouvelle version est parue). */
+    public function currentCharterSignature(string $type = Charter::LISTENING): ?CharterSignature
+    {
+        $charter = Charter::current($type);
+
+        return $charter
+            ? CharterSignature::where('user_id', $this->getKey())->where('charter_id', $charter->id)->first()
+            : null;
+    }
+
+    public function hasSignedCurrentCharter(string $type = Charter::LISTENING): bool
+    {
+        return $this->currentCharterSignature($type) !== null;
+    }
 }

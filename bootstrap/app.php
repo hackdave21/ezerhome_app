@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\EnsureAccountIsActive;
+use App\Http\Middleware\EnsureListeningCharterSigned;
 use App\Http\Middleware\EnsureTwoFactorEnabled;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'account.active' => EnsureAccountIsActive::class,
             'two-factor.required' => EnsureTwoFactorEnabled::class,
+            'charter.listening' => EnsureListeningCharterSigned::class,
             'auth.session' => AuthenticateSession::class,
         ]);
     })

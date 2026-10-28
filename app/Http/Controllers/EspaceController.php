@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Charter;
 use App\Models\DataExport;
 use App\Models\DeletionRequest;
 use App\Support\Phone;
@@ -17,9 +18,16 @@ class EspaceController extends Controller
     }
 
     /** Onglets non encore ouverts en phase 1 : « bientôt disponible ». */
-    public function bientot(string $onglet): View
+    public function bientot(Request $request, string $onglet): View|RedirectResponse
     {
         abort_unless(isset(self::BIENTOT[$onglet]), 404);
+
+        // Le consultant doit signer la charte avant d'accéder à l'écoute.
+        $user = $request->user();
+
+        if ($onglet === 'ecoute' && $user->can('listening.request') && ! $user->hasSignedCurrentCharter()) {
+            return redirect()->route('espace.charte');
+        }
 
         return view('espace.bientot', ['onglet' => $onglet, 'titre' => self::BIENTOT[$onglet]]);
     }
@@ -33,6 +41,8 @@ class EspaceController extends Controller
             'telephone' => $user->phone ? Phone::mask($user->phone) : null,
             'appareils' => $user->activeSessionsCount(),
             'export' => DataExport::where('user_id', $user->id)->latest('id')->first(),
+            'charte' => $user->currentCharterSignature(),
+            'charteVersion' => Charter::current(Charter::LISTENING),
             'suppressionDemandee' => DeletionRequest::where('user_id', $user->id)->where('status', 'pending')->exists(),
         ]);
     }
