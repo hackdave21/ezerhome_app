@@ -48,9 +48,9 @@
                 </p>
                 <div class="text-sm text-ezer-dark flex flex-col gap-1.5 pt-2">
                     <p class="font-semibold text-ezer-dark">Siège social :</p>
-                    <p class="text-ezer-muted">138, Boulevard du 13 Janvier, Hanoukopé, Lomé, Togo</p>
-                    <p class="text-ezer-muted">Tél : <a href="tel:+22898135757" class="text-ezer-green hover:underline font-medium">+228 98 13 57 57</a></p>
-                    <p class="text-ezer-muted">Email : <a href="mailto:mail@ezerhome.org" class="text-ezer-green hover:underline font-medium">mail@ezerhome.org</a></p>
+                    <p class="text-ezer-muted">{{ setting('contact.adresse') }}, Togo</p>
+                    <p class="text-ezer-muted">Tél : <a href="tel:{{ preg_replace('/[^+0-9]/', '', setting('contact.telephone')) }}" class="text-ezer-green hover:underline font-medium">{{ setting('contact.telephone') }}</a></p>
+                    <p class="text-ezer-muted">Email : <a href="mailto:{{ setting('contact.email') }}" class="text-ezer-green hover:underline font-medium">{{ setting('contact.email') }}</a></p>
                 </div>
             </div>
 

@@ -4,8 +4,8 @@
     $nav = [
         ['id' => 'accueil', 'label' => 'Accueil', 'url' => url('/')],
         ['id' => 'a-propos', 'label' => 'À propos', 'url' => url('/a-propos')],
-        ['id' => 'approche', 'label' => 'Notre approche', 'url' => url('/#notre-approche')],
-        ['id' => 'parcours', 'label' => 'Le Parcours', 'url' => url('/#le-parcours')],
+        ['id' => 'approche', 'label' => 'Notre approche', 'url' => url('/a-propos#notre-approche')],
+        ['id' => 'parcours', 'label' => 'Le Parcours', 'url' => url('/a-propos#le-parcours')],
         ['id' => 'ecoute', 'label' => 'Écoute', 'url' => url('/ecoute'), 'badge' => 'Gratuit'],
         ['id' => 'formation', 'label' => 'Formation', 'url' => url('/formation')],
         ['id' => 'coaching', 'label' => 'Coaching', 'url' => url('/coaching')],
@@ -27,15 +27,15 @@
         <div class="flex flex-wrap items-center gap-4 lg:gap-7">
             <span class="inline-flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>
-                138, Boulevard du 13 Janvier, Hanoukopé, Lomé
+                {{ setting('contact.adresse') }}
             </span>
-            <a href="tel:+22898135757" class="hover:underline inline-flex items-center gap-1.5">
+            <a href="tel:{{ preg_replace('/[^+0-9]/', '', setting('contact.telephone')) }}" class="hover:underline inline-flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg>
-                +228 98 13 57 57
+                {{ setting('contact.telephone') }}
             </a>
-            <a href="mailto:mail@ezerhome.org" class="hover:underline inline-flex items-center gap-1.5">
+            <a href="mailto:{{ setting('contact.email') }}" class="hover:underline inline-flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg>
-                mail@ezerhome.org
+                {{ setting('contact.email') }}
             </a>
         </div>
         @auth
@@ -84,7 +84,7 @@
                     Faire un don <span class="text-xs ml-1 font-normal opacity-85">(dès 100 F)</span>
                 </a>
             @endif
-            <a href="https://wa.me/22898135757" target="_blank" rel="noopener" class="inline-flex items-center gap-2 min-h-[48px] px-4 rounded-ezer bg-ezer-green text-white font-semibold text-[15px] hover:bg-ezer-green-dark transition-colors">
+            <a href="https://wa.me/{{ setting('contact.whatsapp') }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 min-h-[48px] px-4 rounded-ezer bg-ezer-green text-white font-semibold text-[15px] hover:bg-ezer-green-dark transition-colors">
                 <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4A8.5 8.5 0 1 1 8 19.6z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-2-2l.8-1-1-2z"></path></svg>
                 WhatsApp
             </a>
@@ -92,7 +92,7 @@
 
         <!-- Actions Mobile & Toggle -->
         <div class="flex lg:hidden items-center gap-2">
-            <a href="https://wa.me/22898135757" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 min-h-[40px] px-3 rounded-ezer bg-ezer-green text-white font-semibold text-sm">
+            <a href="https://wa.me/{{ setting('contact.whatsapp') }}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 min-h-[40px] px-3 rounded-ezer bg-ezer-green text-white font-semibold text-sm">
                 <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4A8.5 8.5 0 1 1 8 19.6z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-2-2l.8-1-1-2z"></path></svg>
                 WhatsApp
             </a>
