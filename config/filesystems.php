@@ -47,6 +47,25 @@ return [
             'report' => false,
         ],
 
+        // Médiathèque : les fichiers publiables vont sur le disque public, les autres sur un disque
+        // privé servi uniquement par une route authentifiée (jamais par URL directe).
+        'public_media' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/media'),
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage/media',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
+        'private_media' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/media'),
+            'visibility' => 'private',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

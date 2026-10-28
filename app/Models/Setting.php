@@ -15,6 +15,8 @@ class Setting extends Model
         'contact.telephone' => '+228 98 13 57 57',
         'contact.whatsapp' => '22898135757',
         'contact.email' => 'mail@ezerhome.org',
+        // Taille maximale d'un fichier de la médiathèque, en Mo (maquette : 5 Mo).
+        'media.max_mb' => '5',
     ];
 
     protected $fillable = ['key', 'value'];

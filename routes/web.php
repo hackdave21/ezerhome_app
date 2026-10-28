@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\TwoFactorSetupController;
 use App\Http\Controllers\CharterController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EspaceController;
+use App\Http\Controllers\MediaFileController;
 use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Route;
@@ -80,4 +81,17 @@ Route::middleware(['auth', 'auth.session', 'account.active'])->group(function ()
         Route::get('/export/{export}', [PrivacyController::class, 'download'])->name('espace.export.download');
         Route::post('/suppression', [PrivacyController::class, 'requestDeletion'])->name('espace.suppression');
     });
+});
+
+/*
+|--------------------------------------------------------------------------
+| Médiathèque : accès aux fichiers (URL stable) et espaces internes
+|--------------------------------------------------------------------------
+*/
+Route::get('/medias/{asset}/{variant?}', [MediaFileController::class, 'show'])
+    ->whereNumber('asset')->whereIn('variant', ['miniature'])->name('media.file');
+
+Route::middleware(['auth', 'auth.session', 'account.active', 'two-factor.required'])->group(function () {
+    Route::view('/admin/mediatheque', 'admin.mediatheque')->middleware('can:media.manage')->name('admin.mediatheque');
+    Route::view('/comite/photos', 'comite.photos')->middleware('can:media.manage-assistance')->name('comite.photos');
 });

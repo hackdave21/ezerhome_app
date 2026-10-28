@@ -5,6 +5,7 @@ use App\Mail\DataExportReady;
 use App\Mail\OtpCodeMail;
 use App\Models\DataExport;
 use App\Models\DeletionRequest;
+use App\Models\MediaAsset;
 use App\Models\User;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,7 +16,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Laravel\Fortify\Fortify;
 use PragmaRX\Google2FA\Google2FA;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Models\Role;
 
 uses(RefreshDatabase::class);
@@ -135,9 +135,9 @@ it('applique UserPolicy', function () {
         ->and($admin->can('deactivate', $admin))->toBeFalse();
 });
 
-it('applique MediaPolicy : le comité ne gère que la catégorie assistance', function () {
-    $assistance = new Media(['collection_name' => 'assistance']);
-    $autres = new Media(['collection_name' => 'logos']);
+it('applique MediaAssetPolicy : le comité ne gère que la catégorie assistance', function () {
+    $assistance = new MediaAsset(['category' => 'assistance']);
+    $autres = new MediaAsset(['category' => 'logo_partenaire']);
 
     $comite = avecRole('comite');
     $admin = avecRole('admin');
@@ -146,7 +146,7 @@ it('applique MediaPolicy : le comité ne gère que la catégorie assistance', fu
     expect($admin->can('update', $autres))->toBeTrue()
         ->and($comite->can('update', $assistance))->toBeTrue()
         ->and($comite->can('update', $autres))->toBeFalse()
-        ->and($consultant->can('viewAny', Media::class))->toBeFalse()
+        ->and($consultant->can('viewAny', MediaAsset::class))->toBeFalse()
         ->and($consultant->can('delete', $assistance))->toBeFalse();
 });
 
