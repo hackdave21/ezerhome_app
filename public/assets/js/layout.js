@@ -108,7 +108,7 @@
             '<a href="' + B + 'pages/auth/connexion.html" class="inline-flex items-center justify-center min-h-[48px] rounded-ezer border-2 border-ezer-green text-ezer-green font-semibold text-[15px]">Se connecter</a>' +
             '<a href="' + B + 'pages/auth/inscription.html" class="inline-flex items-center justify-center min-h-[48px] rounded-ezer bg-ezer-green text-white font-semibold text-[15px]">Créer un compte</a>' +
           '</div>' +
-          (showDon ? '<a href="' + B + 'pages/dons/don.html" class="w-full inline-flex items-center justify-center min-h-[48px] rounded-ezer border border-ezer-borderMuted text-ezer-dark font-semibold text-[15px]">Faire un don (dès 100 FCFA)</a>' : '') +
+          (showDon ? '<a href="' + B + 'pages/dons/don.html" class="w-full inline-flex items-center justify-center min-h-[48px] rounded-ezer border border-ezer-borderMuted text-ezer-dark font-semibold text-[15px]">Faire un don</a>' : '') +
         '</nav>' +
       '</header>';
   }
