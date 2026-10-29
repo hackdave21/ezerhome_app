@@ -293,7 +293,9 @@ it('affiche le profil et les onglets à venir', function () {
         ->get('/espace/profil')->assertOk()
         ->assertSee('Profil et confidentialité')->assertSee('+228 90 •• •• 56')->assertSee('Bonjour, Afi');
 
-    $this->get('/espace/ecoute')->assertOk()->assertSee('bientôt disponible');
+    // Écoute est désormais une rubrique à part entière (étape 1.7) ; les onglets encore à venir sont Formations et Coaching.
+    $this->get('/espace/formations')->assertOk()->assertSee('bientôt disponible');
+    $this->get('/espace/coaching')->assertOk()->assertSee('bientôt disponible');
 });
 
 it('coupe la session d\'un compte désactivé en cours de navigation', function () {

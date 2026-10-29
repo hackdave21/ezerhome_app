@@ -12,22 +12,19 @@ use Illuminate\Http\Request;
 
 class EspaceController extends Controller
 {
-    public function index(): RedirectResponse
+    public function index(Request $request): RedirectResponse
     {
-        return redirect()->route('espace.onglet', 'ecoute');
+        // Le consultant arrive sur l'écoute ; les autres profils sur leur profil (leurs espaces
+        // de travail — intervenant, comité, admin — sont distincts de l'espace personnel).
+        return $request->user()->can('listening.request')
+            ? redirect()->route('espace.ecoute')
+            : redirect()->route('espace.profil');
     }
 
     /** Onglets non encore ouverts en phase 1 : « bientôt disponible ». */
-    public function bientot(Request $request, string $onglet): View|RedirectResponse
+    public function bientot(Request $request, string $onglet): View
     {
         abort_unless(isset(self::BIENTOT[$onglet]), 404);
-
-        // Le consultant doit signer la charte avant d'accéder à l'écoute.
-        $user = $request->user();
-
-        if ($onglet === 'ecoute' && $user->can('listening.request') && ! $user->hasSignedCurrentCharter()) {
-            return redirect()->route('espace.charte');
-        }
 
         return view('espace.bientot', ['onglet' => $onglet, 'titre' => self::BIENTOT[$onglet]]);
     }
@@ -55,7 +52,6 @@ class EspaceController extends Controller
     }
 
     private const BIENTOT = [
-        'ecoute' => 'Écoute',
         'formations' => 'Formations',
         'coaching' => 'Coaching',
     ];

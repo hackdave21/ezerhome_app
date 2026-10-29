@@ -61,7 +61,7 @@ class CharterController extends Controller
 
         return $next && str_starts_with($next, url('/'))
             ? redirect()->to($next)
-            : redirect()->route('espace.onglet', 'ecoute')->with('status', 'Merci, votre signature est enregistrée.');
+            : redirect()->route('espace.ecoute')->with('status', 'Merci, votre signature est enregistrée.');
     }
 
     public function pdf(): Response

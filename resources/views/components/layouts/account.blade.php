@@ -5,7 +5,7 @@
 
 @php
     $onglets = [
-        ['id' => 'ecoute', 'label' => 'Écoute', 'url' => route('espace.onglet', 'ecoute')],
+        ['id' => 'ecoute', 'label' => 'Écoute', 'url' => route('espace.ecoute')],
         ['id' => 'formations', 'label' => 'Formations', 'url' => route('espace.onglet', 'formations')],
         ['id' => 'coaching', 'label' => 'Coaching', 'url' => route('espace.onglet', 'coaching')],
         ['id' => 'profil', 'label' => 'Profil et confidentialité', 'url' => route('espace.profil')],

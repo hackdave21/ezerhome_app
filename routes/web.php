@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminListeningController;
 use App\Http\Controllers\Auth\AccountStatusController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Auth\PasswordResetController;
@@ -8,6 +9,8 @@ use App\Http\Controllers\Auth\TwoFactorSetupController;
 use App\Http\Controllers\CharterController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EspaceController;
+use App\Http\Controllers\IntervenantController;
+use App\Http\Controllers\ListeningController;
 use App\Http\Controllers\MediaFileController;
 use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\SiteController;
@@ -75,7 +78,15 @@ Route::middleware(['auth', 'auth.session', 'account.active'])->group(function ()
         Route::get('/charte', [CharterController::class, 'show'])->name('espace.charte');
         Route::post('/charte', [CharterController::class, 'sign'])->name('espace.charte.sign');
         Route::get('/charte/pdf', [CharterController::class, 'pdf'])->name('espace.charte.pdf');
-        Route::get('/{onglet}', [EspaceController::class, 'bientot'])->whereIn('onglet', ['ecoute', 'formations', 'coaching'])->name('espace.onglet');
+
+        // Écoute : demande et suivi. Verrou charte signée (middleware + policy, défense en profondeur).
+        Route::middleware('charter.listening')->group(function () {
+            Route::get('/ecoute', [ListeningController::class, 'index'])->name('espace.ecoute');
+            Route::post('/ecoute', [ListeningController::class, 'store'])->name('espace.ecoute.store');
+            Route::get('/ecoute/{listeningRequest}', [ListeningController::class, 'show'])->name('espace.ecoute.show');
+        });
+
+        Route::get('/{onglet}', [EspaceController::class, 'bientot'])->whereIn('onglet', ['formations', 'coaching'])->name('espace.onglet');
         Route::post('/appareils/deconnecter', [EspaceController::class, 'logoutOthers'])->name('espace.logout-others');
         Route::post('/export', [PrivacyController::class, 'requestExport'])->name('espace.export');
         Route::get('/export/{export}', [PrivacyController::class, 'download'])->name('espace.export.download');
@@ -94,5 +105,15 @@ Route::get('/medias/{asset}/{variant?}', [MediaFileController::class, 'show'])
 Route::middleware(['auth', 'auth.session', 'account.active', 'two-factor.required'])->group(function () {
     Route::view('/admin/mediatheque', 'admin.mediatheque')->middleware('can:media.manage')->name('admin.mediatheque');
     Route::view('/admin/organigramme', 'admin.organigramme')->middleware('can:org.manage')->name('admin.organigramme');
+
+    // Écoute (bureau) : liste et fiche journalisée, affectation manuelle.
+    Route::middleware('can:listening.view-any')->group(function () {
+        Route::get('/admin/ecoute', [AdminListeningController::class, 'index'])->name('admin.ecoute');
+        Route::get('/admin/ecoute/{listeningRequest}', [AdminListeningController::class, 'show'])->name('admin.ecoute.show');
+    });
+
+    // Espace de travail du thérapeute / coach.
+    Route::get('/intervenant', [IntervenantController::class, 'dashboard'])->middleware('can:listening.view-assigned')->name('intervenant.dashboard');
+
     Route::view('/comite/photos', 'comite.photos')->middleware('can:media.manage-assistance')->name('comite.photos');
 });
