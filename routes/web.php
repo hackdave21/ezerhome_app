@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminListeningController;
+use App\Http\Controllers\AssistanceController;
 use App\Http\Controllers\Auth\AccountStatusController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\TwoFactorSetupController;
 use App\Http\Controllers\CharterController;
+use App\Http\Controllers\Comite\AssistanceController as ComiteAssistanceController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EspaceController;
 use App\Http\Controllers\IntervenantController;
@@ -27,6 +29,11 @@ Route::get('/charte', [CharterController::class, 'publique'])->name('charte');
 Route::get('/equipe', [SiteController::class, 'equipe'])->name('equipe');
 Route::get('/partenaires', [SiteController::class, 'partenaires'])->name('partenaires');
 Route::get('/a-quoi-servent-les-dons', [SiteController::class, 'usageDons'])->name('usage-dons');
+
+Route::get('/assistance', [AssistanceController::class, 'create'])->name('assistance');
+Route::post('/assistance', [AssistanceController::class, 'store'])->middleware('throttle:5,1')->name('assistance.store');
+Route::get('/assistance/suivi', [AssistanceController::class, 'suivi'])->name('assistance.suivi');
+Route::post('/assistance/suivi', [AssistanceController::class, 'track'])->middleware('throttle:10,1')->name('assistance.track');
 
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');
 Route::get('/contact/institutionnel', [ContactController::class, 'institutionnel'])->name('contact.institutionnel');
@@ -116,4 +123,10 @@ Route::middleware(['auth', 'auth.session', 'account.active', 'two-factor.require
     Route::get('/intervenant', [IntervenantController::class, 'dashboard'])->middleware('can:listening.view-assigned')->name('intervenant.dashboard');
 
     Route::view('/comite/photos', 'comite.photos')->middleware('can:media.manage-assistance')->name('comite.photos');
+
+    // Assistance (Comité + Admin) : liste et fiche journalisée.
+    Route::middleware('can:assistance.view')->group(function () {
+        Route::get('/comite/demandes', [ComiteAssistanceController::class, 'index'])->name('comite.demandes');
+        Route::get('/comite/demandes/{assistanceRequest}', [ComiteAssistanceController::class, 'show'])->name('comite.demandes.show');
+    });
 });

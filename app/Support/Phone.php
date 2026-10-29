@@ -37,4 +37,13 @@ class Phone
     {
         return str_contains($identifier, '@');
     }
+
+    /**
+     * Empreinte stable d'un numéro, pour retrouver ou rapprocher des demandes sans stocker le
+     * numéro en clair dans une colonne interrogeable. Utilise la clé applicative comme secret.
+     */
+    public static function hash(string $normalized): string
+    {
+        return hash_hmac('sha256', $normalized, (string) config('app.key'));
+    }
 }
