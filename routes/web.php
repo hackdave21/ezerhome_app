@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminDonationController;
 use App\Http\Controllers\Admin\AdminListeningController;
 use App\Http\Controllers\AssistanceController;
 use App\Http\Controllers\Auth\AccountStatusController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Auth\TwoFactorSetupController;
 use App\Http\Controllers\CharterController;
 use App\Http\Controllers\Comite\AssistanceController as ComiteAssistanceController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DonationController;
 use App\Http\Controllers\EspaceController;
 use App\Http\Controllers\IntervenantController;
 use App\Http\Controllers\ListeningController;
@@ -29,6 +31,10 @@ Route::get('/charte', [CharterController::class, 'publique'])->name('charte');
 Route::get('/equipe', [SiteController::class, 'equipe'])->name('equipe');
 Route::get('/partenaires', [SiteController::class, 'partenaires'])->name('partenaires');
 Route::get('/a-quoi-servent-les-dons', [SiteController::class, 'usageDons'])->name('usage-dons');
+
+Route::get('/dons', [DonationController::class, 'create'])->name('dons');
+Route::post('/dons', [DonationController::class, 'store'])->middleware('throttle:10,1')->name('dons.store');
+Route::get('/dons/{payment:uuid}/instructions', [DonationController::class, 'instructions'])->name('dons.instructions');
 
 Route::get('/assistance', [AssistanceController::class, 'create'])->name('assistance');
 Route::post('/assistance', [AssistanceController::class, 'store'])->middleware('throttle:5,1')->name('assistance.store');
@@ -117,6 +123,12 @@ Route::middleware(['auth', 'auth.session', 'account.active', 'two-factor.require
     Route::middleware('can:listening.view-any')->group(function () {
         Route::get('/admin/ecoute', [AdminListeningController::class, 'index'])->name('admin.ecoute');
         Route::get('/admin/ecoute/{listeningRequest}', [AdminListeningController::class, 'show'])->name('admin.ecoute.show');
+    });
+
+    // Dons et paiements (Admin) : liste, confirmation manuelle, export comptable.
+    Route::middleware('can:donations.view')->group(function () {
+        Route::get('/admin/dons', [AdminDonationController::class, 'index'])->name('admin.dons');
+        Route::get('/admin/dons/export', [AdminDonationController::class, 'export'])->name('admin.dons.export');
     });
 
     // Espace de travail du thérapeute / coach.

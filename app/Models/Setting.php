@@ -17,6 +17,10 @@ class Setting extends Model
         'contact.email' => 'mail@ezerhome.org',
         // Taille maximale d'un fichier de la médiathèque, en Mo (maquette : 5 Mo).
         'media.max_mb' => '5',
+        // Dons : montants suggérés (FCFA) et numéros marchands (à renseigner par le bureau).
+        'donations.suggested' => '1000,5000,10000,25000',
+        'donations.merchant.mixx' => '',
+        'donations.merchant.moov' => '',
     ];
 
     protected $fillable = ['key', 'value'];
