@@ -21,8 +21,8 @@ Route::view('/formation/{slug}', 'site.formation-detail')->name('formation.show'
 Route::view('/coaching', 'site.coaching')->name('coaching');
 Route::view('/coaching/{slug}', 'site.coaching-detail')->name('coaching.show');
 Route::get('/charte', [CharterController::class, 'publique'])->name('charte');
-Route::view('/equipe', 'site.equipe')->name('equipe');
-Route::view('/partenaires', 'site.partenaires')->name('partenaires');
+Route::get('/equipe', [SiteController::class, 'equipe'])->name('equipe');
+Route::get('/partenaires', [SiteController::class, 'partenaires'])->name('partenaires');
 Route::get('/a-quoi-servent-les-dons', [SiteController::class, 'usageDons'])->name('usage-dons');
 
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');
@@ -93,5 +93,6 @@ Route::get('/medias/{asset}/{variant?}', [MediaFileController::class, 'show'])
 
 Route::middleware(['auth', 'auth.session', 'account.active', 'two-factor.required'])->group(function () {
     Route::view('/admin/mediatheque', 'admin.mediatheque')->middleware('can:media.manage')->name('admin.mediatheque');
+    Route::view('/admin/organigramme', 'admin.organigramme')->middleware('can:org.manage')->name('admin.organigramme');
     Route::view('/comite/photos', 'comite.photos')->middleware('can:media.manage-assistance')->name('comite.photos');
 });

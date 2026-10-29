@@ -59,6 +59,9 @@
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+/* Masque les éléments Alpine tant qu'ils ne sont pas initialisés (onglets). */
+[x-cloak] { display: none !important; }
+
 /* Item de navigation actif */
 .nav-item-active {
     color: #187d50 !important;

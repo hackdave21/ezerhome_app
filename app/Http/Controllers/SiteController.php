@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OrgMember;
 use App\Models\Page;
+use App\Models\Partner;
 use Illuminate\Contracts\View\View;
 
 class SiteController extends Controller
@@ -32,6 +34,22 @@ class SiteController extends Controller
     public function usageDons(): View
     {
         return view('site.usage-dons', ['page' => Page::published('a-quoi-servent-les-dons')]);
+    }
+
+    /** Page « Notre équipe » : membres visibles, groupés par comité (grille V1). */
+    public function equipe(): View
+    {
+        return view('site.equipe', [
+            'groupes' => OrgMember::visible()->with('photo')->get()->groupBy('committee'),
+        ]);
+    }
+
+    /** Page « Nos partenaires » : logos publiés (accord écrit + actif). */
+    public function partenaires(): View
+    {
+        return view('site.partenaires', [
+            'partenaires' => Partner::published()->with('logo')->get(),
+        ]);
     }
 
     /**
