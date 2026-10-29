@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminDonationController;
 use App\Http\Controllers\Admin\AdminListeningController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\AssistanceController;
 use App\Http\Controllers\Auth\AccountStatusController;
 use App\Http\Controllers\Auth\OtpController;
@@ -116,8 +117,15 @@ Route::get('/medias/{asset}/{variant?}', [MediaFileController::class, 'show'])
     ->whereNumber('asset')->whereIn('variant', ['miniature'])->name('media.file');
 
 Route::middleware(['auth', 'auth.session', 'account.active', 'two-factor.required'])->group(function () {
+    Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard');
+
     Route::view('/admin/mediatheque', 'admin.mediatheque')->middleware('can:media.manage')->name('admin.mediatheque');
     Route::view('/admin/organigramme', 'admin.organigramme')->middleware('can:org.manage')->name('admin.organigramme');
+    Route::view('/admin/utilisateurs', 'admin.utilisateurs')->middleware('can:users.manage')->name('admin.utilisateurs');
+    Route::view('/admin/cms', 'admin.cms')->middleware('can:settings.manage')->name('admin.cms');
+    Route::view('/admin/parametres', 'admin.parametres')->middleware('can:settings.manage')->name('admin.parametres');
+    Route::view('/admin/notifications', 'admin.notifications')->middleware('can:settings.manage')->name('admin.notifications');
+    Route::view('/admin/audit', 'admin.audit')->middleware('can:audit.view')->name('admin.audit');
 
     // Écoute (bureau) : liste et fiche journalisée, affectation manuelle.
     Route::middleware('can:listening.view-any')->group(function () {

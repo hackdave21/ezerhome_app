@@ -14,11 +14,17 @@ class EspaceController extends Controller
 {
     public function index(Request $request): RedirectResponse
     {
-        // Le consultant arrive sur l'écoute ; les autres profils sur leur profil (leurs espaces
-        // de travail — intervenant, comité, admin — sont distincts de l'espace personnel).
-        return $request->user()->can('listening.request')
-            ? redirect()->route('espace.ecoute')
-            : redirect()->route('espace.profil');
+        // Chaque profil arrive sur son espace de travail. L'espace personnel (profil, écoute)
+        // reste accessible à tous via les onglets.
+        $user = $request->user();
+
+        return match (true) {
+            $user->hasRole('admin') => redirect()->route('admin.dashboard'),
+            $user->hasRole('comite') => redirect()->route('comite.demandes'),
+            $user->hasAnyRole(['therapeute', 'formateur_coach']) => redirect()->route('intervenant.dashboard'),
+            $user->can('listening.request') => redirect()->route('espace.ecoute'),
+            default => redirect()->route('espace.profil'),
+        };
     }
 
     /** Onglets non encore ouverts en phase 1 : « bientôt disponible ». */
