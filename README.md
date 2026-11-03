@@ -4,6 +4,8 @@
 > Basé sur le *Cahier des charges v1.1 — 29 septembre 2026*.
 > **Lancement public visé : 15 octobre 2026** (phase 1, lots 0 à 4).
 > Le projet est livré en **deux phases** : chaque phase se termine par sa propre recette et sa propre préparation de déploiement.
+> 
+> **Clarification clé :** Phase 1 — **dons uniquement (sans paiement)**. Phase 2 — paiements automatisés via Mixx/Moov.
 
 ---
 
@@ -96,7 +98,7 @@
 |---|---|---|
 | Lots | 0, 1, 2, 3, 4 | 5, 6, 7, 7b, 8 |
 | Objectif | Mettre en ligne un site fonctionnel et sûr : vitrine, comptes, écoute (demande + affectation), assistance, dons | Compléter avec intervenants, messagerie, réunions/notes, formations payantes, désactivation auto, paiements automatisés, PWA complète |
-| Paiement | **Confirmation manuelle uniquement** (bureau) | Webhooks Mixx / Moov + réconciliation |
+| Paiement | **Dons uniquement (sans paiement en ligne)** | Webhooks Mixx / Moov + réconciliation |
 | Messagerie / comptes rendus | **Non ouverts** (en attente de l'avis juridique IPDCP) | Ouverts après levée des points juridiques |
 | Sortie de phase | Recette phase 1 + déploiement production v1.0 | Recette finale + déploiement production v2.0 |
 
@@ -335,7 +337,7 @@ Exigences du **header** : adresse, téléphone, e-mail, **bouton WhatsApp** (lie
 | Coaching | `/coaching` | Badge « tarifé » |
 | Tarifs | `/tarifs` | |
 | Assistance | `/assistance` | Formulaire (étape 1.8) |
-| Dons | `/dons` | Formulaire (étape 1.9) |
+| Dons | `/dons` | Formulaire (étape 1.8) |
 | À quoi servent les dons | `/a-quoi-servent-les-dons` | Éditable par l'Admin |
 | Notre équipe | `/equipe` | Organigramme (étape 1.6) |
 | Contact | `/contact` | |
@@ -884,8 +886,6 @@ Panel `/admin` (protégé : rôles + 2FA + éventuellement restriction IP).
 php artisan make:test Permissions/AssistanceAccessTest --pest
 php artisan make:test Permissions/ListeningRequestAccessTest --pest
 php artisan make:test Charter/CharterGateTest --pest
-php artisan make:test Payments/ManualPaymentTest --pest
-php artisan make:test Donations/AnonymousDonationTest --pest
 php artisan make:test Media/MediaDeletionTest --pest
 ```
 
@@ -894,8 +894,7 @@ Tests minimum (voir [Annexe E](#annexe-e--matrice-de-tests-de-permissions)) :
 - Chaque rôle × chaque ressource sensible → autorisé/refusé attendu.
 - Impossible de créer une demande d'écoute sans charte signée.
 - Le comité ne voit que l'assistance ; aucun autre rôle ne la voit.
-- Un paiement ne passe à `paye` que via confirmation Admin tracée.
-- Un don anonyme n'expose aucun nom.
+- Un don n'expose aucun nom (public + exports).
 - Un média utilisé ne peut pas être supprimé.
 - Aucune donnée sensible dans les notifications (assertions sur le contenu des mails).
 
@@ -1006,7 +1005,7 @@ git push origin main --tags
 
 ### ✅ FIN DE LA PHASE 1 — Livrables
 
-Site public complet · comptes/rôles/2FA · chartes signées · médiathèque · organigramme · partenaires · demande d'écoute + affectation manuelle · assistance + Comité · dons avec confirmation manuelle · back-office Filament · audit · sauvegardes · monitoring.
+Site public complet · comptes/rôles/2FA · chartes signées · médiathèque · organigramme · partenaires · demande d'écoute + affectation manuelle · assistance + Comité · **dons (sans paiement en ligne)** · back-office Filament · audit · sauvegardes · monitoring.
 
 ---
 
@@ -1246,11 +1245,399 @@ orders / payments : (déjà posés en phase 1) liés aux inscriptions
 
 ---
 
-## Étape 2.6 — Désactivation automatique à 6 mois (Lot 7b)
+## Étape 2.7 — Paiements automatisés Mixx By Yas / Moov Money (Lot 8)
 
-### 2.6.1 Règle métier
+> **Prérequis** : comptes marchands ouverts, documentation API/sandbox, identifiants, procédure d'ajout d'URL de callback. S'appuyer **uniquement** sur la documentation officielle (ou un agrégateur).
 
-Un consultant est **désactivé** (statut `inactive`, **jamais supprimé**) quand **toutes** ces conditions sont réunies :
+### 2.7.1 Implémentations
+
+```
+app/Payments/
+├── Contracts/PaymentGateway.php
+├── Gateways/ManualGateway.php      (déjà fait)
+├── Gateways/MixxGateway.php        (nouveau)
+├── Gateways/MoovGateway.php        (nouveau)
+├── PaymentManager.php
+└── DTO/ (PaymentInitiation, PaymentStatus)
+```
+
+Configurer les identifiants dans `.env` + `config/payments.php` (jamais en dur).
+
+### 2.7.2 Flux en ligne
+
+1. Création du paiement (`initie`).
+2. Appel à l'API de l'opérateur → **redirection** ou **push USSD** selon l'API (`en_attente`).
+3. **Webhook / callback** de l'opérateur :
+   - vérification de la **signature ou du secret**,
+   - traitement **idempotent** (clé unique `external_ref` + statut),
+   - mise à jour du statut,
+   - **déblocage de l'accès** (inscription, don confirmé).
+4. **Ne jamais** se fier à la seule redirection du navigateur.
+
+### 2.7.3 Job de réconciliation
+
+```php
+Schedule::job(new ReconcilePendingPayments)->everyFiveMinutes();
+```
+
+- Interroge les paiements `en_attente` depuis plus de X minutes (`verify()`).
+- **Expire** ceux qui dépassent la durée limite (`expire`).
+- Journalise chaque changement de statut.
+
+### 2.7.4 Rapprochement manuel
+
+- Interface Admin : **import CSV du relevé marchand**, correspondance par référence, écarts signalés.
+- `ManualGateway` conservé (paiement au siège, virement, espèces).
+
+### 2.7.5 Sécurité
+
+- Route webhook **exemptée de CSRF** mais protégée par vérification de signature + liste d'IP si l'opérateur la fournit.
+- **Aucune donnée de paiement sensible** stockée ; numéro masqué.
+- Logs des webhooks **sans données personnelles**.
+
+### 2.7.6 Tests
+
+- Tests de **webhook** (signature valide/invalide, rejeu, paiement déjà traité).
+- Tests de **réconciliation** (paiement bloqué en attente → statut corrigé).
+- Test : un paiement ne devient `paye` que par webhook vérifié ou confirmation Admin tracée.
+
+### ✅ Critères de sortie de l'étape 2.7
+
+- [ ] Paiement sandbox de bout en bout (initiation → webhook → déblocage)
+- [ ] Rejeu de webhook sans double effet
+- [ ] Réconciliation fonctionnelle
+- [ ] Import CSV de rapprochement opérationnel
+
+---
+
+## Étape 2.8 — PWA complète et mode hors-ligne (Lot 8)
+
+### 2.8.1 Manifest et icônes
+
+- `public/manifest.webmanifest` : nom, `short_name`, couleurs, `display: standalone`, icônes 192/512 (maskable).
+- Balises `<link rel="manifest">` et `theme-color` dans les layouts.
+
+### 2.8.2 Service worker
+
+- `public/sw.js` (Workbox ou maison) :
+  - **Précache** : shell, CSS/JS versionnés, page **hors-ligne**.
+  - **Cache des pages visitées** (stratégie *network-first* avec repli cache) pour les pages **publiques**.
+  - Mise à jour propre (`skipWaiting` contrôlé + message « nouvelle version »).
+
+### 2.8.3 Règle de confidentialité
+
+> **Ne jamais mettre en cache hors-ligne les pages contenant des données sensibles** (espace personnel, messages, notes, assistance, admin).
+
+Implémentation : liste d'exclusion dans le service worker (`/compte`, `/admin`, `/ecoute`, `/messages`, `/assistance/suivi`…) + en-têtes `Cache-Control: no-store` sur ces routes côté serveur.
+
+### 2.8.4 Brouillons hors-ligne (IndexedDB + Background Sync)
+
+- Formulaires (demande d'écoute, message) : brouillon conservé dans **IndexedDB**, renvoyé automatiquement au retour du réseau (**Background Sync**).
+- Prévoir un **repli** (bouton « Réessayer ») quand Background Sync n'est pas supporté.
+- Purger le brouillon local après envoi réussi et à la déconnexion.
+
+### 2.8.5 Vérifications
+
+- Lighthouse PWA (installable), test avion mode hors-ligne, test 3G simulée.
+- Vérifier qu'**aucune** page sensible n'est présente dans les caches (DevTools → Application → Cache Storage).
+
+### ✅ Critères de sortie de l'étape 2.8
+
+- [ ] Application installable, page hors-ligne affichée
+- [ ] Aucune page sensible en cache
+- [ ] Brouillon envoyé automatiquement au retour du réseau
+
+---
+
+## Étape 2.9 — Attestations PDF (optionnel)
+
+- Attestation de participation générée en PDF (DomPDF) après fin d'une formation/coaching.
+- Numérotation, QR code de vérification (facultatif), modèle éditable par l'Admin.
+- Génération en queue, envoi par e-mail, re-téléchargement via lien signé.
+
+### ✅ Critère de sortie
+
+- [ ] Attestation délivrée uniquement aux inscriptions `termine`
+
+---
+
+## Étape 2.10 — Recette finale et préparation du déploiement final
+
+### 2.10.1 Recette complète (staging)
+
+Rejouer la recette phase 1 **et** valider les critères de la phase 2 :
+
+- [ ] Chaque rôle n'accède qu'à ses propres données (tests auto + test manuel, comptes de démo)
+- [ ] Impossible d'écrire à un thérapeute sans charte signée
+- [ ] Un thérapeute non validé ne voit aucun dossier
+- [ ] Le comité ne voit que l'assistance ; aucun autre rôle ne la voit
+- [ ] Paiement `paye` uniquement via **webhook vérifié** ou **confirmation Admin tracée**
+- [ ] Don anonyme : aucun nom (public, exports partagés)
+- [ ] Aucune donnée sensible dans logs, mails, SMS
+- [ ] Pages clés < 3 s en 3G simulée
+- [ ] Un thérapeute ne programme une réunion qu'avec un consultant qui lui est affecté ; le consultant reçoit le lien et voit la réunion
+- [ ] Réunion modifiée/annulée → nouvelle notification
+- [ ] Note clôturée verrouillée, visible dans le suivi Admin, **chaque lecture Admin journalisée**
+- [ ] Consultant désactivé après 6 mois (inactif, rien supprimé, connexion refusée) ; l'Admin peut réactiver
+- [ ] L'Admin gère photos, logos partenaires et organigramme ; fichier utilisé non supprimable sans avertissement
+- [ ] Sauvegarde restaurée avec succès sur un environnement de test
+
+### 2.10.2 Tests de charge et de robustesse
+
+- Test de charge léger (k6/ab) sur pages publiques et formulaires.
+- Vérifier le comportement des **queues** (échecs, reprises, `failed_jobs`).
+- Vérifier le **scheduler** (toutes les tâches de l'[Annexe C](#annexe-c--tâches-planifiées) s'exécutent).
+
+### 2.10.3 Revue sécurité finale
+
+- Audit des dépendances : `composer audit`, `npm audit`.
+- Relecture des Policies et des routes (`php artisan route:list`) : aucune route sensible sans middleware.
+- Revue des notifications (aucun contenu sensible) et des logs applicatifs.
+- Vérification des en-têtes (securityheaders.com) et du TLS (SSL Labs).
+- Revue des accès : liste des comptes Admin/Comité/intervenants, 2FA actif, super-admin désactivé.
+
+### 2.10.4 Documentation de livraison
+
+- `docs/EXPLOITATION.md` : déploiement, rollback, sauvegarde/restauration, rotation des clés, ajout d'un Admin.
+- `docs/ADMIN-GUIDE.md` : guide utilisateur du back-office (pour le bureau).
+- `docs/INCIDENTS.md` : procédure en cas de fuite/incident de données (qui prévenir, délais, IPDCP).
+- Contrat de **maintenance/hébergement (TMA)** : responsabilités de maintenance, sauvegardes et support après livraison.
+
+### 2.10.5 Déploiement production v2.0
+
+Même procédure que 1.12.3, avec en plus :
+
+```bash
+php artisan migrate --force          # migrations des lots 5 à 8
+php artisan db:seed --class=RolesAndPermissionsSeeder --force   # nouvelles permissions
+php artisan queue:restart
+php artisan schedule:list            # vérifier les nouvelles tâches
+```
+
+Check-list :
+
+- [ ] Sauvegarde **complète** pré-déploiement + test de restauration récent
+- [ ] Identifiants **production** Mixx/Moov configurés ; URL de callback déclarées chez les opérateurs
+- [ ] Webhooks testés en production avec un petit montant réel
+- [ ] Service worker : nouvelle version publiée, anciens caches purgés
+- [ ] Durées de conservation et de désactivation **définies dans les paramètres** conformément à l'avis juridique
+- [ ] Monitoring (Sentry, UptimeRobot) actif avec alertes
+- [ ] Communication aux utilisateurs (nouvelles fonctionnalités, nouvelle version de charte si besoin)
+- [ ] Tag Git `v2.0.0`
+
+```bash
+git tag -a v2.0.0 -m "Ezer Home — Phase 2 (intervenants, réunions, formations, paiements, PWA)"
+git push origin main --tags
+```
+
+### ✅ FIN DE LA PHASE 2 — Livrables
+
+Candidatures intervenants · messagerie · réunions + notes + suivi Admin · catalogue formation/coaching · paiements Mixx/Moov automatisés · reçus PDF · désactivation automatique à 6 mois · PWA complète · documentation d'exploitation.
+
+---
+
+# Annexes
+
+## Annexe A — Arborescence cible
+
+```
+ezer-home/
+├── app/
+│   ├── Actions/               # Logique métier (ApproveProviderApplication, CloseMeeting, ...)
+│   ├── Console/Commands/      # DeactivateInactiveConsultants, PurgeExpiredAccounts, ...)
+│   ├── Enums/                 # UserStatus, ListeningRequestStatus, PaymentStatus, ...
+│   ├── Filament/              # Resources Admin & Comité
+│   ├── Http/Middleware/       # EnsureTwoFactorEnabled, EnsureListeningCharterSigned, SecurityHeaders
+│   ├── Jobs/                  # ReconcilePendingPayments, ProcessMedia, SendReminder, ...
+│   ├── Livewire/              # Composants (MediaUploader, Messaging, MeetingNotes, ...)
+│   ├── Models/
+│   ├── Notifications/
+│   ├── Payments/              # PaymentGateway + Manual/Mixx/Moov
+│   ├── Policies/
+│   ├── Rules/                 # AllowedMeetingHost, ...
+│   └── Services/              # TrackingNumberGenerator, ReceiptNumberGenerator, ...
+├── database/
+│   ├── factories/
+│   ├── migrations/
+│   └── seeders/               # RolesAndPermissionsSeeder, DemoSeeder (local/staging uniquement)
+├── resources/
+│   ├── css/ js/
+│   └── views/                 # layouts, pages publiques, espaces, emails
+├── lang/fr/
+├── public/
+│   ├── manifest.webmanifest   # phase 2
+│   └── sw.js                  # phase 2
+├── routes/                    # web.php, console.php, (webhooks.php)
+├── tests/
+│   ├── Feature/               # Permissions, Charter, Payments, Meetings, ...
+│   └── Unit/
+├── docs/                      # EXPLOITATION.md, ADMIN-GUIDE.md, INCIDENTS.md
+└── .github/workflows/ci.yml
+```
+
+## Annexe B — Ordre des migrations
+
+**Phase 1**
+
+1. `users` (+ champs statut/2FA/cycle de vie), `sessions`, `jobs`, `failed_jobs`, `cache`
+2. Spatie permission, activity_log, media
+3. `charters`, `charter_signatures`
+4. `pages`, `settings`
+5. `media_usages` (et table `media` applicative si besoin)
+6. `org_members`, `partners`
+7. `listening_requests`
+8. `assistance_requests`, `assistance_events` (+ décaissements)
+9. `orders`, `payments`, `donations`
+
+**Phase 2**
+
+10. `provider_applications`
+11. `conversations`, `messages`
+12. `meetings`, `meeting_notes`, `meeting_note_addenda`, `meeting_note_reviews`
+13. `offers`, `offer_contents`, `enrollments`
+14. Champs de reçus/attestations, `contact_inquiries` (institutionnels)
+
+> Astuce : poser en phase 1 les colonnes dont la phase 2 dépend (statut utilisateur, `payments.gateway`) pour éviter des migrations destructrices.
+
+## Annexe C — Tâches planifiées
+
+| Commande / Job | Fréquence | Phase | Rôle |
+|---|---|---|---|
+| `queue:work` (Supervisor) | Continu | 1 | Envoi notifications, traitement médias |
+| `donations:monthly-reminder` | Mensuel | 1 | Rappel don régulier |
+| `meetings:send-reminders` | Toutes les 5–15 min | 2 | Rappels 24 h et 1 h |
+| `meetings:remind-unclosed` | Quotidien | 2 | Réunions non clôturées (+24 h) |
+| `ReconcilePendingPayments` | Toutes les 5 min | 2 | Réconciliation / expiration paiements |
+| `accounts:notify-deactivation` | Quotidien | 2 | Préavis 30 jours |
+| `accounts:deactivate-inactive` | Quotidien | 2 | Désactivation à 6 mois |
+| `accounts:purge-expired` | Quotidien | 2 | Anonymisation / purge après durée légale |
+| `backup:run` + `backup:clean` | Quotidien | 1 | Sauvegardes chiffrées |
+| `model:prune` | Quotidien | 1 | Purge des données techniques expirées |
+
+Cron système : `* * * * * php artisan schedule:run`.
+
+## Annexe D — Fichier `.env` type
+
+```dotenv
+APP_NAME="Ezer Home"
+APP_ENV=production
+APP_KEY=                      # sauvegardée séparément !
+APP_DEBUG=false
+APP_URL=https://www.exemple-ezerhome.org
+APP_LOCALE=fr
+APP_FALLBACK_LOCALE=fr
+APP_TIMEZONE=Africa/Lome
+
+LOG_CHANNEL=stack
+LOG_LEVEL=warning
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=ezer_home
+DB_USERNAME=
+DB_PASSWORD=
+
+SESSION_DRIVER=database
+SESSION_LIFETIME=120
+SESSION_SECURE_COOKIE=true
+SESSION_SAME_SITE=lax
+
+QUEUE_CONNECTION=database      # ou redis
+CACHE_STORE=database           # ou redis
+
+MAIL_MAILER=smtp
+MAIL_HOST=
+MAIL_PORT=587
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_FROM_ADDRESS=contact@exemple-ezerhome.org
+MAIL_FROM_NAME="${APP_NAME}"
+
+TURNSTILE_SITE_KEY=
+TURNSTILE_SECRET_KEY=
+
+SMS_DRIVER=                    # passerelle à choisir
+SMS_API_KEY=
+WHATSAPP_NUMBER=228XXXXXXXX    # bouton wa.me
+
+SENTRY_LARAVEL_DSN=
+
+# Phase 2 — paiements (valeurs fournies par les opérateurs)
+MIXX_BASE_URL=
+MIXX_MERCHANT_ID=
+MIXX_SECRET=
+MOOV_BASE_URL=
+MOOV_MERCHANT_ID=
+MOOV_SECRET=
+```
+
+## Annexe E — Matrice de tests de permissions
+
+À automatiser avec Pest (`dataset` par rôle) :
+
+| Ressource / Action | Consultant | Thérapeute | Formateur/Coach | Comité | Admin | Visiteur |
+|---|---|---|---|---|---|---|
+| Ses propres demandes d'écoute | ✔ | – | – | ✘ | – | ✘ |
+| Demandes d'écoute d'un autre consultant | ✘ | ✘ (sauf affecté) | ✘ | ✘ | ✔ tracé | ✘ |
+| Demande d'écoute sans charte signée | ✘ | – | – | – | – | ✘ |
+| Demandes d'assistance | ✘ | ✘ | ✘ | ✔ | ✔ | ✘ |
+| Changer statut assistance | ✘ | ✘ | ✘ | ✔ | ✔ | ✘ |
+| Médiathèque (tout) | ✘ | ✘ | ✘ | catégorie assistance | ✔ | ✘ |
+| Organigramme / partenaires | ✘ | ✘ | ✘ | ✘ | ✔ | lecture publique |
+| Confirmer paiement manuel | ✘ | ✘ | ✘ | option | ✔ | ✘ |
+| Dons et exports comptables | ✘ | ✘ | ✘ | ✘ | ✔ | ✘ |
+| Journal d'audit | ✘ | ✘ | ✘ | ✘ | ✔ (lecture) | ✘ |
+| *(Phase 2)* Dossiers d'un thérapeute collègue | ✘ | ✘ | ✘ | ✘ | ✔ tracé | ✘ |
+| *(Phase 2)* Lien de réunion | concerné | auteur | auteur | ✘ | ✔ | ✘ |
+| *(Phase 2)* Note de réunion | ✘ | auteur | auteur | ✘ | ✔ après clôture, tracé | ✘ |
+| *(Phase 2)* Inscrits d'une offre | ✘ | ✘ | siens | ✘ | ✔ | ✘ |
+
+**Lignes supplémentaires de la matrice du cahier des charges (§3.2)** — à ajouter à la matrice complète :
+
+| Ressource / Action | Consultant | Thérapeute | Formateur/Coach | Comité | Admin | Visiteur |
+|---|---|---|---|---|---|---|
+| Gérer son profil et ses données | ✔ | ✔ | ✔ | ✔ | ✔ | – |
+| Signer la charte, demander une écoute | ✔ | – | – | – | – | – |
+| Voir ses propres échanges d'écoute | ✔ | – | – | – | – | – |
+| Voir ses personnes accompagnées | – | ✔ (siennes) | ✔ (siennes) | – | ✔ (traçable) | – |
+| Programmer une réunion (avec lien) | – | ✔ | ✔ | – | – | – |
+| Prendre des notes de réunion | – | ✔ | ✔ | – | – | – |
+| Lire les notes de réunion | – | ✔ (siennes) | ✔ (siennes) | – | ✔ (après clôture, tracé) | – |
+| S'inscrire à une offre payante | ✔ | ✔ | ✔ | – | – | – |
+| Gérer ses offres / ses inscrits | – | ✔ (siennes) | ✔ (siennes) | – | – | – |
+| Valider/refuser une candidature d'intervenant | – | – | – | – | ✔ | – |
+| Affecter un consultant à un thérapeute/coach | – | – | – | – | ✔ | – |
+| Gérer contenus, tarifs, paramètres, rôles | – | – | – | – | ✔ | – |
+| Gérer la médiathèque (photos, logos, documents) | – | – | – | ✔ (catégorie assistance) | ✔ | – |
+| Gérer l'organigramme et les partenaires | – | – | – | – | ✔ | – |
+| Suivre toutes les réunions et leurs notes | – | – | – | – | ✔ | – |
+| Désactiver / réactiver un compte | – | – | – | – | ✔ | – |
+
+Pour chaque ligne : test **autorisé** + test **refusé** (code 403/redirection), et vérification de l'**entrée d'audit** pour les accès Admin tracés.
+
+## Annexe F — Points à valider avec le client
+
+À trancher **avant de coder** les modules concernés :
+
+- [ ] Rôle exact du **Comité de validation** (assistance seule, ou aussi paiements/candidatures ?)
+- [ ] Formateur et Coach : un seul rôle « Intervenant » ou deux ?
+- [ ] Supervision : un superviseur peut-il lire les comptes rendus ?
+- [ ] Durées de conservation : messages, comptes rendus, demandes d'assistance
+- [ ] Grille tarifaire, catégories d'offres, montants suggérés pour les dons
+- [ ] Passerelles SMS/WhatsApp et budget
+- [ ] Avis juridique IPDCP (données sensibles, hébergement) et avis fiscal sur les reçus
+- [ ] Documentation API, sandbox et délais d'ouverture des comptes marchands Mixx/Moov
+- [ ] Responsabilité de la maintenance, des sauvegardes et du support après livraison (TMA)
+- [ ] Partage des notes de réunion avec l'Admin : formulation dans la charte, personnes autorisées, finalité
+- [ ] Point de départ exact des 6 mois, durée du préavis, durée avant purge/anonymisation
+- [ ] Liste des membres de l'organigramme, formats des photos, accord de publication des photos d'assistance
+- [ ] Outil de visioconférence des intervenants et hôtes de liens autorisés
+- [ ] Textes légaux (charte d'écoute, charte intervenant, mentions légales, confidentialité) à fournir par le client
+
+---
+
+*Ezer Home — README de réalisation · basé sur le Cahier des charges v1.1 (29 septembre 2026).*
 
 1. Toutes ses demandes d'écoute sont **clôturées**.
 2. Toutes ses inscriptions formation/coaching sont **terminées ou annulées**.
