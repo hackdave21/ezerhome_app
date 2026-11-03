@@ -13,6 +13,18 @@ Légende des responsables : 👤 **Client** · 🛠️ **Développeur** · ⚙�
 ## 1. Services externes à ouvrir et à brancher
 
 ### 1.1 Paiement en ligne — Mixx By Yas et Moov Money  🛠️ 👤
+
+**⚠️ EN PHASE 2 MAINTENANT** — La passerelle de paiement automatique est reportée à la Phase 2 (étape 2.7).
+En Phase 1, nous conservons uniquement la confirmation manuelle via `ManualGateway`.
+
+- **En place** : l'architecture (`PaymentGateway`, `PaymentManager`) et la passerelle manuelle (`ManualGateway`).
+- **Manque** : ouverture des comptes marchands, implémentation des passerelles automatiques (reportées).
+
+**⚠️ EN PHASE 2 MAINTENANT** — La passerelle de paiement automatique est reportée à la Phase 2 (étape 2.7).
+En Phase 1, nous conservons uniquement la confirmation manuelle via `ManualGateway`.
+
+- **En place** : l'architecture (`PaymentGateway`, `PaymentManager`) et la passerelle manuelle (`ManualGateway`).
+- **Manque** : ouverture des comptes marchands, implémentation des passerelles automatiques (reportées).
 - **En place** : l'architecture finale (`PaymentGateway`, `PaymentManager`) et la passerelle
   **manuelle** (`ManualGateway`) active. Un don crée un paiement `en_attente`, affiche les
   **instructions de versement** et attend la **confirmation Admin tracée**.
