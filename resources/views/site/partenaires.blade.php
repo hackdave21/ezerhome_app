@@ -22,9 +22,9 @@
                 @endif
                     <li class="flex flex-col gap-3 p-5 border border-ezer-green-border rounded-ezer bg-white">
                         @php $contenu = $partenaire->url; @endphp
-                        <span class="h-20 lg:h-24 rounded-ezer bg-white border border-ezer-green-border inline-flex items-center justify-center p-3">
+                        <span class="h-28 lg:h-32 rounded-ezer bg-ezer-green-light border border-ezer-green-borderLight inline-flex items-center justify-center p-4">
                             @if ($partenaire->logo && $partenaire->logo->isPubliclyServed())
-                                <img src="{{ $partenaire->logo->url() }}" alt="Logo {{ $partenaire->name }}" loading="lazy" class="max-h-full max-w-full object-contain">
+                                <img src="{{ $partenaire->logo->url() }}" alt="Logo {{ $partenaire->name }}" loading="lazy" class="max-h-full max-w-full w-auto object-contain">
                             @else
                                 <span class="font-semibold text-ezer-green">{{ $partenaire->name }}</span>
                             @endif

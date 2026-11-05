@@ -43,6 +43,26 @@ class CharterSeeder extends Seeder
             ['Notes de séance', "[Texte provisoire, à valider par le juriste] Les notes prises par la personne qui vous écoute sont partagées avec le bureau d'Ezer Home, à des fins de suivi et de supervision."],
         ];
 
-        return collect($sections)->map(fn ($s, $i) => $this->section($i + 1, $s[0], $s[1]))->implode('');
+        return collect($sections)->map(fn ($s, $i) => $this->section($i + 1, $s[0], $s[1]))->implode('')
+            .$this->engagement();
+    }
+
+    /** Section 9 : engagements de l'association envers la personne accompagnée. */
+    private function engagement(): string
+    {
+        $items = [
+            ['Confidentialité', 'ce que vous confiez reste entre vous et votre accompagnant.'],
+            ['Liberté de conscience', "une parole de l'Écriture peut être partagée, jamais imposée."],
+            ['Accompagnants formés', "des bénévoles formés à l'écoute et suivis en supervision."],
+            ['Orientation si nécessaire', 'quand la situation le demande, nous vous orientons vers un médecin ou un professionnel de santé.'],
+        ];
+
+        $liste = collect($items)
+            ->map(fn ($i) => '<li><strong class="font-semibold">'.e($i[0]).' :</strong> '.e($i[1]).'</li>')
+            ->implode('');
+
+        return '<section class="flex flex-col gap-1.5"><h2 class="font-semibold"><span class="text-ezer-green">9.</span> Ce que vous pouvez attendre de nous</h2>'
+            .'<p class="italic text-ezer-muted">« Celui qui a l\'esprit fidèle garde les secrets. » — d\'après Proverbes 11.13</p>'
+            .'<ul class="flex flex-col gap-1.5 list-disc pl-5">'.$liste.'</ul></section>'."\n";
     }
 }

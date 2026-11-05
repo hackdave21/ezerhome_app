@@ -9,8 +9,8 @@
                     @csrf
 
                     <div class="flex flex-col gap-1.5">
-                        <label for="in-nom" class="text-[15px] font-semibold">Votre nom</label>
-                        <span id="in-nom-aide" class="text-sm text-ezer-muted">Un prénom ou un pseudonyme suffit.</span>
+                        <label for="in-nom" class="text-[15px] font-semibold">Votre nom complet</label>
+                        <span id="in-nom-aide" class="text-sm text-ezer-muted">Indiquez votre nom et vos prénoms.</span>
                         @error('name')<p role="alert" class="text-sm font-semibold text-ezer-red">{{ $message }}</p>@enderror
                         <input id="in-nom" name="name" value="{{ old('name') }}" required type="text" autocomplete="name" aria-describedby="in-nom-aide" class="w-full h-[52px] px-4 border border-ezer-borderMuted rounded-ezer bg-white focus:border-ezer-green focus:outline-none">
                     </div>

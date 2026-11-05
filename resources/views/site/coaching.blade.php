@@ -59,9 +59,9 @@
                         <div class="flex flex-wrap gap-2">
                             <span class="text-[13px] font-semibold px-2.5 py-0.5 rounded-full bg-ezer-green-light border border-ezer-green text-ezer-green">Gratuit</span>
                         </div>
-                        <h3 class="text-xl font-semibold">Séance découverte</h3>
+                        <h3 class="font-cooper text-xl font-semibold">Séance découverte</h3>
                         <p class="text-[15px] text-ezer-muted">Pour faire connaissance, sans engagement</p>
-                        <p class="font-cooper text-2xl">Gratuit</p>
+                        <p class="text-2xl">Gratuit</p>
                         <dl class="flex flex-col divide-y divide-ezer-green-borderLight text-sm">
                             <div class="flex justify-between gap-2 py-2"><dt class="text-ezer-muted">Séances</dt><dd class="font-semibold">1</dd></div>
                             <div class="flex justify-between gap-2 py-2"><dt class="text-ezer-muted">Durée d'une séance</dt><dd class="font-semibold">30 min</dd></div>
@@ -78,8 +78,8 @@
                         <div class="flex flex-wrap gap-2">
                             <span class="text-[13px] font-semibold px-2.5 py-0.5 rounded-full bg-white border border-ezer-dark">Tarifé</span>
                         </div>
-                        <h3 class="text-xl font-semibold">Confiance en soi</h3>
-                        <p class="font-cooper text-xl lg:text-2xl leading-tight">Sur évaluation<br><span class="text-lg">à partir de 25 000 FCFA / séance</span></p>
+                        <h3 class="font-cooper text-xl font-semibold">Confiance en soi</h3>
+                        <p class="text-xl lg:text-2xl leading-tight">Sur évaluation<br>à partir de 25 000 FCFA / séance</p>
                         <p class="text-[15px] text-ezer-muted">Accompagnement individuel, selon les besoins identifiés à l'évaluation.</p>
                         <p class="flex items-center gap-2 text-sm">
                             <svg aria-hidden="true" class="shrink-0 w-4 h-4 text-ezer-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20a6.5 6.5 0 0 1 13 0"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6"></path></svg>
@@ -93,8 +93,8 @@
                             <span class="text-[13px] font-semibold px-2.5 py-0.5 rounded-full bg-white border border-ezer-dark">Tarifé</span>
                             <span class="text-[13px] font-semibold px-2.5 py-0.5 rounded-full bg-ezer-dark text-white">Complet</span>
                         </div>
-                        <h3 class="text-xl font-semibold">Accompagnement parental</h3>
-                        <p class="font-cooper text-xl lg:text-2xl leading-tight">Sur évaluation<br><span class="text-lg">à partir de 25 000 FCFA / séance</span></p>
+                        <h3 class="font-cooper text-xl font-semibold">Accompagnement parental</h3>
+                        <p class="text-xl lg:text-2xl leading-tight">Sur évaluation<br>à partir de 25 000 FCFA / séance</p>
                         <p class="text-[15px] text-ezer-muted">Accompagnement individuel, selon les besoins identifiés à l'évaluation.</p>
                         <p class="flex items-center gap-2 text-sm">
                             <svg aria-hidden="true" class="shrink-0 w-4 h-4 text-ezer-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20a6.5 6.5 0 0 1 13 0"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6"></path></svg>
@@ -107,8 +107,8 @@
                         <div class="flex flex-wrap gap-2">
                             <span class="text-[13px] font-semibold px-2.5 py-0.5 rounded-full bg-white border border-ezer-dark">Tarifé</span>
                         </div>
-                        <h3 class="text-xl font-semibold">Projet professionnel</h3>
-                        <p class="font-cooper text-xl lg:text-2xl leading-tight">Sur évaluation<br><span class="text-lg">à partir de 25 000 FCFA / séance</span></p>
+                        <h3 class="font-cooper text-xl font-semibold">Projet professionnel</h3>
+                        <p class="text-xl lg:text-2xl leading-tight">Sur évaluation<br>à partir de 25 000 FCFA / séance</p>
                         <p class="text-[15px] text-ezer-muted">Accompagnement individuel, selon les besoins identifiés à l'évaluation.</p>
                         <p class="flex items-center gap-2 text-sm">
                             <svg aria-hidden="true" class="shrink-0 w-4 h-4 text-ezer-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20a6.5 6.5 0 0 1 13 0"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6"></path></svg>

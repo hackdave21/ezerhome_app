@@ -4,8 +4,6 @@
     $nav = [
         ['id' => 'accueil', 'label' => 'Accueil', 'url' => url('/')],
         ['id' => 'a-propos', 'label' => 'À propos', 'url' => url('/a-propos')],
-        ['id' => 'approche', 'label' => 'Notre approche', 'url' => url('/a-propos#notre-approche')],
-        ['id' => 'parcours', 'label' => 'Le Parcours', 'url' => url('/a-propos#le-parcours')],
         ['id' => 'ecoute', 'label' => 'Écoute', 'url' => url('/ecoute'), 'badge' => 'Gratuit'],
         ['id' => 'formation', 'label' => 'Formation', 'url' => url('/formation')],
         ['id' => 'coaching', 'label' => 'Coaching', 'url' => url('/coaching')],
@@ -15,6 +13,8 @@
 
     $mobileExtra = [
         ['label' => 'Notre équipe', 'url' => url('/equipe')],
+        ['label' => 'Notre approche', 'url' => url('/a-propos#notre-approche')],
+        ['label' => 'Le Parcours', 'url' => url('/a-propos#le-parcours')],
         ['label' => 'Club EZER (Telegram et WhatsApp)', 'url' => url('/#club-ezer')],
         ['label' => "Une parole pour aujourd'hui", 'url' => url('/#parole-du-jour')],
         ['label' => "Charte d'accompagnement", 'url' => url('/#charte-accompagnement')],
@@ -61,24 +61,45 @@
         </a>
 
         <!-- Menu Desktop -->
-        <nav aria-label="Navigation principale" class="hidden lg:flex items-center gap-1">
+        <nav aria-label="Navigation principale" class="hidden xl:flex items-center gap-1">
             @foreach($nav as $item)
                 @php $isActive = ($active === $item['id']); @endphp
-                <a href="{{ $item['url'] }}" 
-                   @if($isActive) aria-current="page" @endif
-                   class="px-3 py-2 font-semibold text-[15px] transition-colors {{ $isActive ? 'text-ezer-green shadow-ezer-nav' : 'text-ezer-dark hover:text-ezer-green' }}">
-                    {{ $item['label'] }}
-                    @if(isset($item['badge']))
-                        <span class="ml-1 text-[11px] font-semibold px-1.5 py-0.5 rounded-full border border-ezer-green bg-ezer-green-light text-ezer-green">
-                            {{ $item['badge'] }}
-                        </span>
-                    @endif
-                </a>
+                @if($item['id'] === 'a-propos')
+                    <div class="relative group">
+                        <a href="{{ $item['url'] }}"
+                           @if($isActive) aria-current="page" @endif
+                           aria-haspopup="true"
+                           class="px-3 py-2.5 font-semibold text-[15px] whitespace-nowrap inline-flex items-center justify-center gap-1 transition-colors {{ $isActive ? 'text-ezer-green shadow-ezer-nav' : 'text-ezer-dark hover:text-ezer-green' }}">
+                            {{ $item['label'] }}
+                            <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+                        </a>
+                        <div class="hidden group-hover:block group-focus-within:block absolute left-0 top-full pt-1 z-50 min-w-[230px]">
+                            <div class="bg-white border border-ezer-green-border rounded-ezer shadow-lg py-1 flex flex-col">
+                                <a href="{{ url('/a-propos') }}" class="px-4 py-2.5 text-[15px] font-semibold text-ezer-dark hover:bg-ezer-green-light hover:text-ezer-green">À propos d'Ezer Home</a>
+                                <a href="{{ url('/a-propos#notre-approche') }}" class="px-4 py-2.5 text-[15px] font-semibold text-ezer-dark hover:bg-ezer-green-light hover:text-ezer-green">Notre approche</a>
+                                <a href="{{ url('/a-propos#le-parcours') }}" class="px-4 py-2.5 text-[15px] font-semibold text-ezer-dark hover:bg-ezer-green-light hover:text-ezer-green">Le Parcours</a>
+                                <a href="{{ url('/equipe') }}" class="px-4 py-2.5 text-[15px] font-semibold text-ezer-dark hover:bg-ezer-green-light hover:text-ezer-green">Notre équipe</a>
+                                <a href="{{ url('/partenaires') }}" class="px-4 py-2.5 text-[15px] font-semibold text-ezer-dark hover:bg-ezer-green-light hover:text-ezer-green">Nos partenaires</a>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <a href="{{ $item['url'] }}"
+                       @if($isActive) aria-current="page" @endif
+                       class="px-3 py-2.5 font-semibold text-[15px] whitespace-nowrap inline-flex items-center justify-center gap-1 transition-colors {{ $isActive ? 'text-ezer-green shadow-ezer-nav' : 'text-ezer-dark hover:text-ezer-green' }}">
+                        {{ $item['label'] }}
+                        @if(isset($item['badge']))
+                            <span class="ml-1 text-[11px] font-semibold px-1.5 py-0.5 rounded-full border border-ezer-green bg-ezer-green-light text-ezer-green">
+                                {{ $item['badge'] }}
+                            </span>
+                        @endif
+                    </a>
+                @endif
             @endforeach
         </nav>
 
         <!-- Actions Desktop -->
-        <div class="hidden lg:flex items-center gap-3">
+        <div class="hidden xl:flex items-center gap-3">
             @if($showDon)
                 <a href="{{ url('/dons') }}" class="inline-flex items-center justify-center min-h-[44px] px-4 rounded-ezer border-2 border-ezer-green text-ezer-green font-semibold text-[15px] hover:bg-ezer-green hover:text-white transition-colors">
                     Faire un don <span class="text-xs ml-1 font-normal opacity-85">(dès 100 F)</span>
@@ -91,7 +112,7 @@
         </div>
 
         <!-- Actions Mobile & Toggle -->
-        <div class="flex lg:hidden items-center gap-2">
+        <div class="flex xl:hidden items-center gap-2">
             <a href="https://wa.me/{{ setting('contact.whatsapp') }}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 min-h-[40px] px-3 rounded-ezer bg-ezer-green text-white font-semibold text-sm">
                 <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4A8.5 8.5 0 1 1 8 19.6z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-2-2l.8-1-1-2z"></path></svg>
                 WhatsApp
@@ -106,7 +127,7 @@
     </div>
 
     <!-- Menu Mobile Déroulant -->
-    <nav x-show="mobileMenuOpen" x-cloak class="lg:hidden border-t border-ezer-green-borderLight bg-white px-6 py-4 flex flex-col gap-4">
+    <nav x-show="mobileMenuOpen" x-cloak class="xl:hidden border-t border-ezer-green-borderLight bg-white px-6 py-4 flex flex-col gap-4 max-h-[calc(100dvh-5.5rem)] overflow-y-auto overscroll-contain">
         <ul class="flex flex-col">
             @foreach(array_merge($nav, $mobileExtra) as $mItem)
                 @php $isActive = (isset($mItem['id']) && $active === $mItem['id']); @endphp

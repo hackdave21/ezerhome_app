@@ -109,7 +109,7 @@
 
             <aside class="lg:sticky lg:top-32 w-full lg:w-[320px] shrink-0 border border-ezer-green-border rounded-ezer p-6 flex flex-col gap-3">
                 <p class="text-xs font-semibold uppercase tracking-wider text-ezer-green">Inscription</p>
-                <p class="font-cooper text-xl lg:text-2xl leading-tight">Sur évaluation<br><span class="text-lg">à partir de 25 000 FCFA / séance</span></p>
+                <p class="text-xl lg:text-2xl leading-tight">Sur évaluation<br>à partir de 25 000 FCFA / séance</p>
                 <p class="text-sm text-ezer-muted">Le tarif est fixé après évaluation des besoins.</p>
                 <p class="flex items-center gap-2 text-[15px]">
                     <svg aria-hidden="true" class="shrink-0 w-5 h-5 text-ezer-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20a6.5 6.5 0 0 1 13 0"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6"></path></svg>

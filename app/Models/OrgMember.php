@@ -20,18 +20,27 @@ class OrgMember extends Model
 
     public const BUREAU_EXECUTIF = 'bureau_executif';
 
+    public const CONSEIL_ADMINISTRATION = 'conseil_administration';
+
     public const COMITE_ASSISTANCE = 'comite_assistance';
 
     public const COMITE_VALIDATION = 'comite_validation';
 
     public const AUTRE = 'autre';
 
-    /** Instances, dans l'ordre d'affichage sur la page publique. */
+    /** Instances gérées dans l'administration. */
     public const COMMITTEES = [
         self::BUREAU_EXECUTIF => 'Bureau exécutif',
+        self::CONSEIL_ADMINISTRATION => "Conseil d'administration",
         self::COMITE_ASSISTANCE => "Comité d'assistance",
         self::COMITE_VALIDATION => 'Comité de validation',
         self::AUTRE => 'Autre',
+    ];
+
+    /** Instances affichées sur la page publique « Notre équipe ». */
+    public const PUBLIC_COMMITTEES = [
+        self::BUREAU_EXECUTIF => 'Bureau exécutif',
+        self::CONSEIL_ADMINISTRATION => "Conseil d'administration",
     ];
 
     protected $fillable = [

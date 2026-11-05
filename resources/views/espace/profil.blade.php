@@ -14,7 +14,7 @@
                     <h2 id="pr-infos" class="text-xl font-semibold">Mes informations</h2>
                 </div>
                 <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="flex flex-col gap-0.5"><dt class="text-sm text-ezer-muted">Nom ou pseudonyme</dt><dd class="font-semibold">{{ $user->name }}</dd></div>
+                    <div class="flex flex-col gap-0.5"><dt class="text-sm text-ezer-muted">Nom complet</dt><dd class="font-semibold">{{ $user->name }}</dd></div>
                     <div class="flex flex-col gap-0.5"><dt class="text-sm text-ezer-muted">Téléphone</dt><dd class="font-semibold">{{ $telephone ?? 'Non renseigné' }}</dd></div>
                     <div class="flex flex-col gap-0.5"><dt class="text-sm text-ezer-muted">E-mail</dt><dd class="font-semibold">{{ $user->email ?? 'Non renseigné' }}</dd></div>
                     <div class="flex flex-col gap-0.5"><dt class="text-sm text-ezer-muted">Contact préféré</dt><dd class="font-semibold">{{ $user->preferred_contact ?? 'Non renseigné' }}</dd></div>

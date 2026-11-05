@@ -75,7 +75,6 @@
                             <span class="w-12 h-12 lg:w-14 lg:h-14 rounded-ezer bg-ezer-green-light text-ezer-green inline-flex items-center justify-center">
                                 <svg class="w-6 h-6 lg:w-7 lg:h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5a2 2 0 0 1 2-2h14v14H6a2 2 0 0 0-2 2zm0 0a2 2 0 0 0 2 2h14"></path></svg>
                             </span>
-                            <span class="text-xs px-2.5 py-1 rounded-full border border-ezer-dark bg-white text-ezer-dark font-semibold">Tarifé</span>
                         </div>
                     <h3 class="text-xl lg:text-2xl font-semibold text-ezer-dark mt-2">Je veux m'équiper</h3>
                     <p class="text-sm lg:text-base text-ezer-muted">Des formations pratiques et coaching pour développer vos compétences.</p>

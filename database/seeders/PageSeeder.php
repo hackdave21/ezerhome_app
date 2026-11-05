@@ -80,7 +80,7 @@ class PageSeeder extends Seeder
                 'sections' => [
                     ['id' => 'responsable', 'titre' => 'Qui est responsable de vos données ?', 'paras' => ["L'association Ezer Home, dont le siège est situé [Quartier, rue], Lomé, est responsable des données collectées sur ce site."]],
                     ['id' => 'donnees', 'titre' => 'Quelles données collectons-nous ?', 'paras' => ['Nous ne demandons que ce qui est nécessaire au service que vous choisissez :'], 'liste' => [
-                        'Écoute : un prénom ou un pseudonyme, un numéro de téléphone, et ce que vous choisissez de partager.',
+                        'Écoute : nom complet, un numéro de téléphone, et ce que vous choisissez de partager.',
                         "Assistance : nom et prénoms, téléphone, e-mail facultatif, type d'aide et description de votre situation.",
                         'Formations et coaching : identité, coordonnées, inscriptions et paiements.',
                         'Dons : montant et moyen de paiement, plus votre nom ou contact si vous les indiquez. Le don anonyme ne demande aucune donnée personnelle.',
@@ -88,7 +88,7 @@ class PageSeeder extends Seeder
                     ]],
                     ['id' => 'finalites', 'titre' => 'Pourquoi ?', 'paras' => ['Uniquement pour traiter votre demande, assurer le service choisi et vous recontacter. Jamais à des fins commerciales.']],
                     ['id' => 'acces', 'titre' => 'Qui y a accès ?', 'paras' => [
-                        "Seules les personnes de l'association chargées de votre demande : l'équipe d'écoute, le comité d'assistance ou le bureau, selon le cas.",
+                        "Seules les personnes de l'association chargées de votre demande : l'équipe d'écoute ou le bureau, selon le cas.",
                         'Vos données ne sont ni vendues, ni louées, ni cédées.',
                     ]],
                     ['id' => 'conservation', 'titre' => 'Combien de temps les gardons-nous ?', 'paras' => ['[Durées de conservation par type de données, à définir.]']],
@@ -108,7 +108,7 @@ class PageSeeder extends Seeder
                     ['id' => 'compte', 'titre' => 'Compte personnel', 'paras' => ["Un compte est nécessaire pour l'écoute, les formations et le coaching. Vous êtes responsable de la confidentialité de votre mot de passe."]],
                     ['id' => 'services', 'titre' => 'Services gratuits et tarifés', 'paras' => ['Chaque offre porte un badge « Gratuit » ou « Tarifé » :'], 'liste' => [
                         'Écoute et accompagnement : gratuit.',
-                        'Assistance matérielle : gratuite, sans compte.',
+                        'Assistance matérielle : gratuite.',
                         "Formations et coaching : gratuits ou tarifés, selon l'offre affichée.",
                     ]],
                     ['id' => 'paiements', 'titre' => 'Inscriptions et paiements', 'paras' => [

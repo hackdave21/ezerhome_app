@@ -57,7 +57,7 @@
                         </span>
                         <div class="flex flex-col gap-1 pt-1 pb-7">
                             <h3 class="text-lg font-semibold">Créer votre compte</h3>
-                            <p class="text-[15px] text-ezer-muted">Un prénom ou un pseudonyme et un numéro de téléphone suffisent. Votre espace personnel reste privé.</p>
+                            <p class="text-[15px] text-ezer-muted">Votre nom complet et un numéro de téléphone suffisent. Votre espace personnel reste privé.</p>
                         </div>
                     </li>
                     <li class="flex gap-4">
@@ -122,6 +122,10 @@
                         <svg aria-hidden="true" class="shrink-0 mt-0.5 w-[18px] h-[18px] text-ezer-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
                         <span>L'écoute ne remplace ni un suivi médical, ni un service d'urgence.</span>
                     </li>
+                    <li class="flex gap-2.5">
+                        <svg aria-hidden="true" class="shrink-0 mt-0.5 w-[18px] h-[18px] text-ezer-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+                        <span>Des bénévoles formés à l'écoute et suivis en supervision vous accompagnent.</span>
+                    </li>
                 </ul>
                 <a href="{{ route('charte') }}" class="self-start font-semibold py-2.5 text-ezer-green hover:underline">Lire la charte complète</a>
             </section>
@@ -148,7 +152,7 @@
                 <h2 id="ec-faq" class="text-xl font-semibold">Vos questions</h2>
                 <details class="border-b border-ezer-green-borderLight">
                     <summary class="cursor-pointer py-3.5 min-h-6 font-semibold">Dois-je donner mon vrai nom ?</summary>
-                    <p class="mb-4 text-[15px] text-ezer-muted">Non. Vous pouvez utiliser un prénom ou un pseudonyme. Seul un numéro de téléphone est nécessaire pour vous recontacter.</p>
+                    <p class="mb-4 text-[15px] text-ezer-muted">Oui. Un vrai nom complet est nécessaire. Un numéro de téléphone est également requis pour vous recontacter.</p>
                 </details>
                 <details class="border-b border-ezer-green-borderLight">
                     <summary class="cursor-pointer py-3.5 min-h-6 font-semibold">Qui peut lire ce que je partage ?</summary>

@@ -19,7 +19,7 @@
         <div class="max-w-[1400px] mx-auto px-6 lg:px-12 py-8 lg:py-14 flex flex-col gap-14 lg:gap-16">
 
             @php
-                $instances = collect(\App\Models\OrgMember::COMMITTEES)
+                $instances = collect(\App\Models\OrgMember::PUBLIC_COMMITTEES)
                     ->mapWithKeys(fn ($label, $cle) => [$cle => ($groupes[$cle] ?? collect())])
                     ->filter(fn ($membres) => $membres->isNotEmpty());
             @endphp
@@ -27,14 +27,14 @@
             @if ($instances->count() > 1)
                 <nav aria-label="Instances" class="flex flex-wrap gap-2">
                     @foreach ($instances as $cle => $membres)
-                        <a href="#{{ $cle }}" class="min-h-[44px] inline-flex items-center px-4 rounded-ezer border border-ezer-green-border bg-white text-ezer-green font-semibold text-[15px] hover:bg-ezer-green-light transition-colors">{{ \App\Models\OrgMember::COMMITTEES[$cle] }}</a>
+                        <a href="#{{ $cle }}" class="min-h-[44px] inline-flex items-center px-4 rounded-ezer border border-ezer-green-border bg-white text-ezer-green font-semibold text-[15px] hover:bg-ezer-green-light transition-colors">{{ \App\Models\OrgMember::PUBLIC_COMMITTEES[$cle] }}</a>
                     @endforeach
                 </nav>
             @endif
 
             @forelse ($instances as $cle => $membres)
                 <section id="{{ $cle }}" class="flex flex-col gap-5 scroll-mt-36">
-                    <h2 class="font-cooper font-normal text-2xl lg:text-3xl">{{ \App\Models\OrgMember::COMMITTEES[$cle] }}</h2>
+                    <h2 class="font-cooper font-normal text-2xl lg:text-3xl">{{ \App\Models\OrgMember::PUBLIC_COMMITTEES[$cle] }}</h2>
                     <ul class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 list-none">
                         @foreach ($membres as $membre)
                             <li class="flex flex-col gap-3 p-5 border border-ezer-green-border rounded-ezer bg-white">
@@ -64,7 +64,7 @@
 
             <!-- CTA -->
             <section class="bg-ezer-green-light rounded-ezer p-5 lg:p-8 flex flex-col gap-3">
-                <h2 class="text-xl font-semibold">Vous souhaitez vous engager à nos côtés ?</h2>
+                <h2 class="text-xl font-semibold">Vous souhaitez vous engager à nos côtés comme bénévoles ?</h2>
                 <p>Écrivez-nous en présentant votre parcours et vos disponibilités.</p>
                 <a href="{{ url('/contact') }}" class="self-start inline-flex items-center justify-center min-h-[52px] px-6 rounded-ezer bg-ezer-green text-white font-semibold hover:bg-ezer-green-dark transition-colors">Nous contacter</a>
             </section>
