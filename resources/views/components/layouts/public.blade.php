@@ -2,7 +2,6 @@
     'title' => 'Ezer Home — Accueil, Écoute & Accompagnement',
     'active' => '',
     'description' => 'EZER HOME accueille, écoute et accompagne toute personne en quête de sens, de repos ou de repères, sur place à Lomé ou en ligne.',
-    'showDon' => true,
     'sobreFooter' => false,
 ])
 
@@ -26,7 +25,7 @@
 <body class="min-h-full flex flex-col bg-white text-ezer-dark font-sans text-base leading-normal antialiased">
     
     <!-- En-tête partagé -->
-    <x-header :active="$active" :show-don="$showDon" />
+    <x-header :active="$active" />
 
     <!-- Contenu Principal -->
     <main class="flex-1 flex flex-col">

@@ -1,4 +1,4 @@
-@props(['active' => '', 'showDon' => true])
+@props(['active' => ''])
 
 @php
     $nav = [
@@ -16,8 +16,6 @@
         ['label' => 'Notre approche', 'url' => url('/a-propos#notre-approche')],
         ['label' => 'Le Parcours', 'url' => url('/a-propos#le-parcours')],
         ['label' => 'Club EZER (Telegram et WhatsApp)', 'url' => url('/#club-ezer')],
-        ['label' => "Une parole pour aujourd'hui", 'url' => url('/#parole-du-jour')],
-        ['label' => "Charte d'accompagnement", 'url' => url('/#charte-accompagnement')],
     ];
 @endphp
 
@@ -69,7 +67,7 @@
                         <a href="{{ $item['url'] }}"
                            @if($isActive) aria-current="page" @endif
                            aria-haspopup="true"
-                           class="px-3 py-2.5 font-semibold text-[15px] whitespace-nowrap inline-flex items-center justify-center gap-1 transition-colors {{ $isActive ? 'text-ezer-green shadow-ezer-nav' : 'text-ezer-dark hover:text-ezer-green' }}">
+                           class="px-3 py-2.5 font-semibold text-[15px] whitespace-nowrap inline-flex items-center justify-center gap-1 transition-colors {{ $isActive ? 'nav-item-active' : 'text-ezer-dark hover:text-ezer-green' }}">
                             {{ $item['label'] }}
                             <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
                         </a>
@@ -86,13 +84,8 @@
                 @else
                     <a href="{{ $item['url'] }}"
                        @if($isActive) aria-current="page" @endif
-                       class="px-3 py-2.5 font-semibold text-[15px] whitespace-nowrap inline-flex items-center justify-center gap-1 transition-colors {{ $isActive ? 'text-ezer-green shadow-ezer-nav' : 'text-ezer-dark hover:text-ezer-green' }}">
+                       class="px-3 py-2.5 font-semibold text-[15px] whitespace-nowrap inline-flex items-center justify-center gap-1 transition-colors {{ $isActive ? 'nav-item-active' : 'text-ezer-dark hover:text-ezer-green' }}">
                         {{ $item['label'] }}
-                        @if(isset($item['badge']))
-                            <span class="ml-1 text-[11px] font-semibold px-1.5 py-0.5 rounded-full border border-ezer-green bg-ezer-green-light text-ezer-green">
-                                {{ $item['badge'] }}
-                            </span>
-                        @endif
                     </a>
                 @endif
             @endforeach
@@ -100,11 +93,6 @@
 
         <!-- Actions Desktop -->
         <div class="hidden xl:flex items-center gap-3">
-            @if($showDon)
-                <a href="{{ url('/dons') }}" class="inline-flex items-center justify-center min-h-[44px] px-4 rounded-ezer border-2 border-ezer-green text-ezer-green font-semibold text-[15px] hover:bg-ezer-green hover:text-white transition-colors">
-                    Faire un don <span class="text-xs ml-1 font-normal opacity-85">(dès 100 F)</span>
-                </a>
-            @endif
             <a href="https://wa.me/{{ setting('contact.whatsapp') }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 min-h-[48px] px-4 rounded-ezer bg-ezer-green text-white font-semibold text-[15px] hover:bg-ezer-green-dark transition-colors">
                 <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4A8.5 8.5 0 1 1 8 19.6z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-2-2l.8-1-1-2z"></path></svg>
                 WhatsApp
@@ -127,15 +115,15 @@
     </div>
 
     <!-- Menu Mobile Déroulant -->
-    <nav x-show="mobileMenuOpen" x-cloak class="xl:hidden border-t border-ezer-green-borderLight bg-white px-6 py-4 flex flex-col gap-4 max-h-[calc(100dvh-5.5rem)] overflow-y-auto overscroll-contain">
+    <nav x-show="mobileMenuOpen" x-cloak class="xl:hidden border-t border-ezer-green-borderLight bg-white px-4 py-4 flex flex-col gap-4 max-h-[calc(100dvh-5.5rem)] overflow-y-auto overscroll-contain">
         <ul class="flex flex-col">
             @foreach(array_merge($nav, $mobileExtra) as $mItem)
                 @php $isActive = (isset($mItem['id']) && $active === $mItem['id']); @endphp
                 <li class="border-b border-ezer-green-borderLight last:border-0">
                     <a href="{{ $mItem['url'] }}" 
                        @if($isActive) aria-current="page" @endif
-                       class="flex items-center justify-between gap-3 min-h-[50px] font-semibold text-[16px] {{ $isActive ? 'text-ezer-green' : 'text-ezer-dark' }}">
-                        <span class="inline-flex items-center gap-2">
+                       class="flex items-center justify-between gap-3 min-h-[52px] font-semibold text-[17px] {{ $isActive ? 'text-ezer-green' : 'text-ezer-dark' }}">
+                        <span class="inline-flex items-center gap-2.5">
                             {{ $mItem['label'] }}
                             @if(isset($mItem['badge']))
                                 <span class="text-xs font-semibold px-2 py-0.5 rounded-full border border-ezer-green bg-ezer-green-light text-ezer-green">{{ $mItem['badge'] }}</span>
@@ -154,9 +142,6 @@
                 <a href="{{ url('/register') }}" class="inline-flex items-center justify-center min-h-[48px] rounded-ezer bg-ezer-green text-white font-semibold text-[15px]">Créer un compte</a>
             @endauth
         </div>
-        @if($showDon)
-            <a href="{{ url('/dons') }}" class="w-full inline-flex items-center justify-center min-h-[48px] rounded-ezer border border-ezer-borderMuted text-ezer-dark font-semibold text-[15px]">Faire un don (dès 100 FCFA)</a>
-        @endif
     </nav>
 </header>
 
