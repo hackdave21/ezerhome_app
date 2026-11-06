@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ContactRequest extends FormRequest
 {
-    public const OBJETS = ['Question générale', 'Formation', 'Coaching', 'Dons', 'Bénévolat', 'Autre'];
+    public const OBJETS = ['Question générale', 'Formation', 'Coaching', 'Bénévolat', 'Autre'];
 
     public const TYPES_ORGANISATION = [
         'Entreprise', 'Fondation', 'ONG ou association', 'Institution publique', 'Coopération internationale', 'Autre',

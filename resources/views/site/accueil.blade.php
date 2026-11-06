@@ -175,10 +175,10 @@
             </div>
         </section>
 
-        <!-- SECTION 4 : ASSISTANCE MATÉRIELLE & DONS -->
-        <section class="max-w-[1400px] mx-auto px-6 lg:px-12 py-12 lg:py-18 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+        <!-- SECTION 4 : ASSISTANCE MATÉRIELLE -->
+        <section class="max-w-[760px] mx-auto px-6 lg:px-12 py-12 lg:py-18 w-full">
 
-            <!-- Carte 1 : Aide Matérielle -->
+            <!-- Carte : Aide Matérielle -->
             <div class="rounded-ezer p-6 lg:p-10 border border-ezer-green-border border-t-4 border-t-ezer-green bg-white flex flex-col justify-between gap-5 shadow-sm">
                 <div class="flex flex-col gap-4">
                     <div class="flex items-center justify-between">
@@ -194,34 +194,6 @@
                 <a href="{{ url('/assistance') }}" class="self-start inline-flex items-center justify-center min-h-[48px] px-6 rounded-ezer bg-ezer-green text-white font-semibold text-sm lg:text-base hover:bg-ezer-green-dark transition-colors">
                     Faire une demande d'assistance
                 </a>
-            </div>
-
-            <!-- Carte 2 : Faire un Don -->
-            <div class="rounded-ezer p-6 lg:p-10 bg-ezer-green text-white flex flex-col justify-between gap-5 shadow-sm">
-                <div class="flex flex-col gap-4">
-                    <svg class="w-9 h-9 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7.5-4.6-9.2-9A4.8 4.8 0 0 1 12 6.5 4.8 4.8 0 0 1 21.2 11C19.5 15.4 12 20 12 20z"></path></svg>
-                    <h2 class="font-cooper font-normal text-2xl lg:text-3xl">Soutenir la mission</h2>
-                    <p class="text-sm lg:text-base text-white/90">Vos dons financent l'assistance aux personnes dans le besoin.</p>
-
-                    <!-- Suggestions de montants -->
-                    <div class="grid grid-cols-3 gap-2 pt-1">
-                        <a href="{{ url('/dons?m=2000') }}" class="flex items-center justify-center min-h-[44px] rounded-ezer border-2 border-white text-white font-semibold hover:bg-white hover:text-ezer-green transition-colors text-sm">2 000 F</a>
-                        <a href="{{ url('/dons?m=5000') }}" class="flex items-center justify-center min-h-[44px] rounded-ezer border-2 border-white text-white font-semibold hover:bg-white hover:text-ezer-green transition-colors text-sm">5 000 F</a>
-                        <a href="{{ url('/dons?m=10000') }}" class="flex items-center justify-center min-h-[44px] rounded-ezer border-2 border-white text-white font-semibold hover:bg-white hover:text-ezer-green transition-colors text-sm">10 000 F</a>
-                    </div>
-                </div>
-
-                <div class="flex flex-col gap-3">
-                    <div class="flex flex-wrap items-center gap-4">
-                        <a href="{{ url('/dons') }}" class="inline-flex items-center justify-center min-h-[48px] px-6 rounded-ezer bg-white text-ezer-dark font-semibold text-sm lg:text-base hover:bg-gray-100 transition-colors">
-                            Faire un don
-                        </a>
-                        <a href="{{ url('/a-quoi-servent-les-dons') }}" class="text-sm font-semibold text-white hover:underline">
-                            À quoi servent les dons ?
-                        </a>
-                    </div>
-                    <p class="text-xs text-white/80">Par Mixx By Yas ou Moov Money · Sans compte · Don anonyme possible</p>
-                </div>
             </div>
 
         </section>

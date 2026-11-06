@@ -82,8 +82,7 @@ class PageSeeder extends Seeder
                     ['id' => 'donnees', 'titre' => 'Quelles données collectons-nous ?', 'paras' => ['Nous ne demandons que ce qui est nécessaire au service que vous choisissez :'], 'liste' => [
                         'Écoute : nom complet, un numéro de téléphone, et ce que vous choisissez de partager.',
                         "Assistance : nom et prénoms, téléphone, e-mail facultatif, type d'aide et description de votre situation.",
-                        'Formations et coaching : identité, coordonnées, inscriptions et paiements.',
-                        'Dons : montant et moyen de paiement, plus votre nom ou contact si vous les indiquez. Le don anonyme ne demande aucune donnée personnelle.',
+                        'Formations et coaching : identité, coordonnées et inscriptions.',
                         'Contact : les informations saisies dans le formulaire.',
                     ]],
                     ['id' => 'finalites', 'titre' => 'Pourquoi ?', 'paras' => ['Uniquement pour traiter votre demande, assurer le service choisi et vous recontacter. Jamais à des fins commerciales.']],
@@ -111,11 +110,9 @@ class PageSeeder extends Seeder
                         'Assistance matérielle : gratuite.',
                         "Formations et coaching : gratuits ou tarifés, selon l'offre affichée.",
                     ]],
-                    ['id' => 'paiements', 'titre' => 'Inscriptions et paiements', 'paras' => [
-                        'Les prix sont indiqués en francs CFA. Le paiement se fait par Mixx By Yas, Moov Money ou en espèces au siège.',
-                        "L'inscription est confirmée après vérification du paiement par le bureau. Conditions d'annulation : [à définir].",
+                    ['id' => 'inscriptions', 'titre' => 'Inscriptions', 'paras' => [
+                        "L'inscription est confirmée par le bureau. Conditions d'annulation : [à définir].",
                     ]],
-                    ['id' => 'dons', 'titre' => 'Dons', 'paras' => ['Les dons sont libres. Ils sont confirmés manuellement par le bureau après vérification du paiement.']],
                     ['id' => 'charte', 'titre' => "Charte d'écoute", 'paras' => ["L'accès à l'écoute suppose l'acceptation et la signature de la charte d'écoute."]],
                     ['id' => 'responsabilite', 'titre' => 'Responsabilité', 'paras' => ["L'écoute et le coaching ne remplacent ni un avis médical, ni un service d'urgence."]],
                     ['id' => 'droit', 'titre' => 'Droit applicable', 'paras' => ['Les présentes conditions sont soumises au droit togolais. Elles peuvent évoluer ; la date de mise à jour figure en haut de page.']],

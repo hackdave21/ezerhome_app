@@ -31,7 +31,7 @@
                     </li>
                     <li class="flex-1 basis-[240px] flex items-start gap-3 p-3.5 rounded-ezer bg-ezer-green-light text-[15px]">
                         <span aria-hidden="true" class="shrink-0 w-7 h-7 rounded-full border-2 border-ezer-green bg-white inline-flex items-center justify-center text-sm font-semibold">3</span>
-                        <span>Pour une formation tarifée, réglez par Mixx By Yas ou Moov Money. Le bureau confirme votre place.</span>
+                        <span>Le bureau confirme votre place après validation de votre inscription.</span>
                     </li>
                 </ol>
             </section>
@@ -176,4 +176,42 @@
                 </ul>
             </section>
         </div>
+
+    @push('scripts')
+    <script>
+        (function () {
+            const boutons = document.querySelectorAll('[data-filter]');
+            const cartes = document.querySelectorAll('#liste [data-type]');
+            const compte = document.getElementById('compte');
+            const vide = document.getElementById('vide');
+
+            function appliquer(filtre) {
+                let visibles = 0;
+                cartes.forEach(function (carte) {
+                    const afficher = filtre === 'toutes' || carte.dataset.type === filtre;
+                    carte.classList.toggle('hidden', !afficher);
+                    if (afficher) visibles++;
+                });
+                if (compte) compte.textContent = visibles + (visibles > 1 ? ' offres' : ' offre');
+                if (vide) vide.classList.toggle('hidden', visibles !== 0);
+                document.getElementById('liste').classList.toggle('hidden', visibles === 0);
+                boutons.forEach(function (bouton) {
+                    const actif = bouton.dataset.filter === filtre;
+                    bouton.setAttribute('aria-pressed', actif ? 'true' : 'false');
+                    bouton.classList.toggle('border-2', actif);
+                    bouton.classList.toggle('border-ezer-green', actif);
+                    bouton.classList.toggle('bg-ezer-green', actif);
+                    bouton.classList.toggle('text-white', actif);
+                    bouton.classList.toggle('border-ezer-borderMuted', !actif);
+                    bouton.classList.toggle('bg-white', !actif);
+                    bouton.classList.toggle('text-ezer-dark', !actif);
+                });
+            }
+
+            boutons.forEach(function (bouton) {
+                bouton.addEventListener('click', function () { appliquer(bouton.dataset.filter); });
+            });
+        })();
+    </script>
+    @endpush
 </x-layouts.public>

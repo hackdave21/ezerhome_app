@@ -12,7 +12,7 @@
                     </ol>
                 </nav>
                 <h1 class="font-cooper font-normal text-3xl lg:text-5xl">Notre équipe</h1>
-                <p class="text-base max-w-[640px]">Les personnes qui font vivre Ezer Home, organisées par instance.</p>
+                <p class="text-base max-w-[640px]">Les personnes qui font vivre Ezer Home, organisées en deux instances : le bureau exécutif et le conseil d'administration.</p>
             </div>
         </section>
 
@@ -33,9 +33,19 @@
             @endif
 
             @forelse ($instances as $cle => $membres)
+                @php
+                    $description = match ($cle) {
+                        \App\Models\OrgMember::BUREAU_EXECUTIF => "Il dirige l'association, la représente et veille au respect de ses statuts.",
+                        \App\Models\OrgMember::CONSEIL_ADMINISTRATION => "Il veille à la bonne marche de l'association, valide les orientations et les offres de formation et de coaching, et accompagne les intervenants.",
+                        default => null,
+                    };
+                @endphp
                 <section id="{{ $cle }}" class="flex flex-col gap-5 scroll-mt-36">
                     <h2 class="font-cooper font-normal text-2xl lg:text-3xl">{{ \App\Models\OrgMember::PUBLIC_COMMITTEES[$cle] }}</h2>
-                    <ul class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 list-none">
+                    @if ($description)
+                        <p class="text-ezer-muted">{{ $description }}</p>
+                    @endif
+                    <ul class="grid grid-cols-1 md:grid-cols-2 {{ $cle === \App\Models\OrgMember::CONSEIL_ADMINISTRATION ? 'xl:grid-cols-3' : 'xl:grid-cols-4' }} gap-4 list-none">
                         @foreach ($membres as $membre)
                             <li class="flex flex-col gap-3 p-5 border border-ezer-green-border rounded-ezer bg-white">
                                 <span role="img" aria-label="Photo de {{ $membre->fullName() }}" class="w-full h-28 rounded-ezer bg-ezer-green-light border-2 border-ezer-green text-ezer-muted inline-flex items-center justify-center overflow-hidden">

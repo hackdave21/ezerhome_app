@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-5 max-w-[680px]">
     <div>
         <h1 class="font-cooper font-normal text-2xl lg:text-[32px]">Paramètres</h1>
-        <p class="text-[15px] text-ezer-muted">Coordonnées, dons et conservation des données.</p>
+        <p class="text-[15px] text-ezer-muted">Coordonnées, médias et conservation des données.</p>
     </div>
 
     @if ($saved)

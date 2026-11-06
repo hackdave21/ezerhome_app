@@ -6,12 +6,11 @@ use App\Models\Page;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
-/** CMS (Admin) : édition des pages de contenu (mentions, confidentialité, CGU, dons, FAQ). */
+/** CMS (Admin) : édition des pages de contenu (mentions, confidentialité, CGU, FAQ). */
 class AdminPages extends Component
 {
     /** Pages éditables attendues : slug => titre par défaut. */
     public const KNOWN = [
-        'a-quoi-servent-les-dons' => 'À quoi servent les dons',
         'faq' => 'Foire aux questions',
         'mentions-legales' => 'Mentions légales',
         'confidentialite' => 'Politique de confidentialité',

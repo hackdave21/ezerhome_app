@@ -31,7 +31,7 @@
                     </li>
                     <li class="flex-1 basis-[240px] flex items-start gap-3 p-3.5 rounded-ezer bg-ezer-green-light text-[15px]">
                         <span aria-hidden="true" class="shrink-0 w-7 h-7 rounded-full border-2 border-ezer-green bg-white inline-flex items-center justify-center text-sm font-semibold">3</span>
-                        <span>Réglez par Mixx By Yas ou Moov Money. Le bureau confirme votre premier rendez-vous.</span>
+                        <span>Le bureau confirme votre premier rendez-vous après validation de votre inscription.</span>
                     </li>
                 </ol>
             </section>
@@ -120,4 +120,44 @@
                 </ul>
             </section>
         </div>
+
+    @push('scripts')
+    <script>
+        (function () {
+            const liste = document.getElementById('liste');
+            const compte = document.getElementById('compte');
+            const vide = document.getElementById('vide');
+            const items = Array.from(liste.querySelectorAll('[data-type]'));
+
+            function appliquer(filtre) {
+                let visibles = 0;
+                items.forEach(function (item) {
+                    const ok = filtre === 'toutes' || item.getAttribute('data-type') === filtre;
+                    item.classList.toggle('hidden', !ok);
+                    if (ok) visibles++;
+                });
+                compte.textContent = visibles + (visibles > 1 ? ' formules' : ' formule');
+                vide.hidden = visibles > 0;
+
+                document.querySelectorAll('[data-filter]').forEach(function (btn) {
+                    const on = btn.getAttribute('data-filter') === filtre;
+                    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+                    btn.classList.toggle('bg-ezer-green', on);
+                    btn.classList.toggle('text-white', on);
+                    btn.classList.toggle('border-ezer-green', on);
+                    btn.classList.toggle('border-2', on);
+                    btn.classList.toggle('bg-white', !on);
+                    btn.classList.toggle('text-ezer-dark', !on);
+                    btn.classList.toggle('border-ezer-borderMuted', !on);
+                });
+            }
+
+            document.querySelectorAll('[data-filter]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    appliquer(btn.getAttribute('data-filter'));
+                });
+            });
+        })();
+    </script>
+    @endpush
 </x-layouts.public>

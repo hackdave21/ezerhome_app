@@ -9,7 +9,7 @@
                         @if ($profil === 'organisation')
                         <li><a href="{{ url('/contact') }}" class="text-ezer-green hover:underline">Contact</a></li>
                         <li aria-hidden="true">/</li>
-                        <li aria-current="page">Donateur institutionnel</li>
+                        <li aria-current="page">Partenaire institutionnel</li>
                         @else
                         <li aria-current="page">Contact</li>
                         @endif
@@ -39,7 +39,7 @@
                             <input type="radio" name="ct-profil" value="organisation" @checked($profil === 'organisation') class="w-5 h-5 mt-0.5 shrink-0 accent-ezer-green">
                             <span class="flex flex-col gap-0.5">
                                 <span class="font-semibold">Une organisation</span>
-                                <span class="text-sm text-ezer-muted">Donateur institutionnel, entreprise, fondation ou partenaire.</span>
+                                <span class="text-sm text-ezer-muted">Entreprise, fondation, institution ou partenaire.</span>
                             </span>
                         </label>
                     </div>
@@ -144,14 +144,6 @@
                     <fieldset class="flex flex-col gap-2">
                         <legend class="text-[15px] font-semibold mb-2">Soutien envisagé <span class="font-normal text-ezer-muted">(plusieurs choix possibles)</span></legend>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            {{-- Phase 2 — Don : réactiver les options "Don financier" et "Don en nature" quand le module est disponible
-                            <label class="flex items-center gap-2.5 min-h-[52px] px-3.5 border border-ezer-borderMuted rounded-ezer bg-white cursor-pointer has-[:checked]:border-2 has-[:checked]:border-ezer-green has-[:checked]:bg-ezer-green-light">
-                                <input type="checkbox" name="soutien[]" value="Don financier" @checked(in_array('Don financier', old('soutien', []), true)) class="w-5 h-5 shrink-0 accent-ezer-green">Don financier
-                            </label>
-                            <label class="flex items-center gap-2.5 min-h-[52px] px-3.5 border border-ezer-borderMuted rounded-ezer bg-white cursor-pointer has-[:checked]:border-2 has-[:checked]:border-ezer-green has-[:checked]:bg-ezer-green-light">
-                                <input type="checkbox" name="soutien[]" value="Don en nature" @checked(in_array('Don en nature', old('soutien', []), true)) class="w-5 h-5 shrink-0 accent-ezer-green">Don en nature
-                            </label>
-                            --}}
                             <label class="flex items-center gap-2.5 min-h-[52px] px-3.5 border border-ezer-borderMuted rounded-ezer bg-white cursor-pointer has-[:checked]:border-2 has-[:checked]:border-ezer-green has-[:checked]:bg-ezer-green-light">
                                 <input type="checkbox" name="soutien[]" value="Mécénat de compétences" @checked(in_array('Mécénat de compétences', old('soutien', []), true)) class="w-5 h-5 shrink-0 accent-ezer-green">Mécénat de compétences
                             </label>

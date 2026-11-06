@@ -1,5 +1,7 @@
 <x-layouts.public title="Page introuvable — Ezer Home" active="">
 
+        <main class="max-w-[760px] mx-auto px-6 lg:px-12 py-12 lg:py-24 flex flex-col gap-7">
+
         <div class="flex flex-col gap-3">
             <p class="text-xs font-semibold uppercase tracking-widest text-ezer-green">Erreur 404</p>
             <h1 class="font-cooper font-normal text-3xl lg:text-5xl">Cette page est introuvable</h1>
@@ -37,5 +39,7 @@
             </ul>
         </nav>
 
-        <p class="text-[15px] text-ezer-muted">Vous cherchiez autre chose ? <a href="https://wa.me/22800000000" class="font-semibold text-ezer-green hover:underline">Écrivez-nous sur WhatsApp</a>, nous vous orienterons.</p>
+        <p class="text-[15px] text-ezer-muted">Vous cherchiez autre chose ? <a href="https://wa.me/{{ setting('contact.whatsapp') }}" class="font-semibold text-ezer-green hover:underline">Écrivez-nous sur WhatsApp</a>, nous vous orienterons.</p>
+
+        </main>
 </x-layouts.public>

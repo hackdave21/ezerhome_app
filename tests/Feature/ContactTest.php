@@ -43,7 +43,7 @@ it('affiche les deux formulaires de la maquette', function () {
         ->assertSee('Soutien envisagé')->assertSee('Mécénat de compétences')
         ->assertSee('Entreprise');
 
-    $this->get('/contact/institutionnel')->assertOk()->assertSee('Donateur institutionnel');
+    $this->get('/contact/institutionnel')->assertOk()->assertSee('Partenaire institutionnel');
 });
 
 it('envoie le message d\'un particulier (e-mail facultatif)', function () {

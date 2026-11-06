@@ -24,7 +24,7 @@
                     <p>Dans un contexte où de nombreuses personnes traversent des épreuves morales, spirituelles, familiales, professionnelles ou matérielles sans trouver de lieu où être écoutées et accompagnées, des hommes et des femmes animés par les valeurs bibliques d'amour du prochain, d'accueil et de compassion ont résolu d'unir leurs efforts.</p>
                     <p>Le nom EZER, terme hébreu qui désigne le secours apporté à celui qui ne peut s'en sortir seul, ou aide, exprime leur vocation : offrir un lieu d'écoute, de relation d'aide, d'assistance et de formation, où chacun est reçu avec dignité, sans jugement ni discrimination, pour retrouver le repos, la restauration et la force de se relever.</p>
                     <p>L'association a pour but d'offrir à toute personne en quête de sens, de repères ou de soutien un espace d'écoute et de relation d'aide fondé sur les valeurs bibliques, ainsi qu'une assistance et des formations, en vue de sa restauration et de son relèvement, sans distinction d'origine, de sexe, de religion ou de condition sociale.</p>
-                    <p>Ezer Home réunit cinq services : une écoute gratuite et confidentielle, une assistance matérielle sans compte, des formations, un coaching personnalisé, et la collecte de dons qui rend tout cela possible.</p>
+                    <p>Ezer Home réunit quatre services : une écoute gratuite et confidentielle, une assistance matérielle sans compte, des formations et un coaching personnalisé.</p>
                 </div>
                 <ul class="grid grid-cols-1 md:grid-cols-3 gap-3 list-none">
                     <li class="bg-ezer-green-light rounded-ezer p-5 flex flex-col gap-1">
@@ -203,17 +203,11 @@
             <!-- POUR ALLER PLUS LOIN -->
             <section aria-labelledby="ap-plus" class="flex flex-col gap-5">
                 <h2 id="ap-plus" class="font-cooper font-normal text-2xl lg:text-3xl">Pour aller plus loin</h2>
-                <ul class="grid grid-cols-1 md:grid-cols-3 gap-4 list-none">
+                <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 list-none">
                     <li>
                         <a href="{{ url('/partenaires') }}" class="flex flex-col gap-1 h-full p-6 border border-ezer-green-border rounded-ezer bg-white hover:border-ezer-green transition-colors">
                             <span class="font-semibold text-lg">Nos partenaires</span>
                             <span class="text-[15px] text-ezer-muted">Ceux qui nous soutiennent.</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/a-quoi-servent-les-dons') }}" class="flex flex-col gap-1 h-full p-6 border border-ezer-green-border rounded-ezer bg-white hover:border-ezer-green transition-colors">
-                            <span class="font-semibold text-lg">À quoi servent les dons</span>
-                            <span class="text-[15px] text-ezer-muted">Comment nous utilisons chaque franc reçu.</span>
                         </a>
                     </li>
                     <li>

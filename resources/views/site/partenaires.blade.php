@@ -10,7 +10,7 @@
                     </ol>
                 </nav>
                 <h1 class="font-cooper font-normal text-3xl lg:text-5xl">Nos partenaires</h1>
-                <p class="text-base max-w-[640px]">Ils soutiennent l'action d'Ezer Home par un don, un savoir-faire ou un projet mené ensemble. Merci à eux.</p>
+                <p class="text-base max-w-[640px]">Ils soutiennent l'action d'Ezer Home par un savoir-faire ou un projet mené ensemble. Merci à eux.</p>
             </div>
         </section>
 

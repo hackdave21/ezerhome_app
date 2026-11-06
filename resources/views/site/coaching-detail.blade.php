@@ -96,12 +96,10 @@
                 </section>
 
                 <section aria-labelledby="od-inscription" class="flex flex-col gap-4">
-                    <h2 id="od-inscription" class="font-cooper font-normal text-2xl lg:text-[28px]">Inscription et paiement</h2>
+                    <h2 id="od-inscription" class="font-cooper font-normal text-2xl lg:text-[28px]">Inscription</h2>
                     <ul class="flex flex-col gap-2.5 list-none">
                         <li class="flex items-start gap-2.5"><span aria-hidden="true" class="shrink-0 mt-2 w-1.5 h-1.5 rounded-full bg-ezer-green"></span>Inscription depuis votre compte Ezer Home. Si vous n'en avez pas, vous le créerez à l'étape suivante.</li>
-                        <li class="flex items-start gap-2.5"><span aria-hidden="true" class="shrink-0 mt-2 w-1.5 h-1.5 rounded-full bg-ezer-green"></span>Paiement par Mixx By Yas ou Moov Money, après votre inscription.</li>
-                        <li class="flex items-start gap-2.5"><span aria-hidden="true" class="shrink-0 mt-2 w-1.5 h-1.5 rounded-full bg-ezer-green"></span>Le bureau vérifie le paiement et vous confirme votre place par SMS ou WhatsApp.</li>
-                        <li class="flex items-start gap-2.5"><span aria-hidden="true" class="shrink-0 mt-2 w-1.5 h-1.5 rounded-full bg-ezer-green"></span>Annulation : [conditions d'annulation et de remboursement].</li>
+                        <li class="flex items-start gap-2.5"><span aria-hidden="true" class="shrink-0 mt-2 w-1.5 h-1.5 rounded-full bg-ezer-green"></span>Le bureau vous confirme votre place par SMS ou WhatsApp.</li>
                         <li class="flex items-start gap-2.5"><span aria-hidden="true" class="shrink-0 mt-2 w-1.5 h-1.5 rounded-full bg-ezer-green"></span>Une séance découverte gratuite est possible avant de vous engager.</li>
                     </ul>
                 </section>
@@ -115,7 +113,7 @@
                     <svg aria-hidden="true" class="shrink-0 w-5 h-5 text-ezer-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20a6.5 6.5 0 0 1 13 0"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6"></path></svg>
                     2 créneaux disponibles
                 </p>
-                <a href="{{ url('/commande/recapitulatif') }}" class="w-full inline-flex items-center justify-center min-h-[52px] rounded-ezer bg-ezer-green text-white font-semibold hover:bg-ezer-green-dark transition-colors">S'inscrire</a>
+                <a href="{{ url('/contact') }}" class="w-full inline-flex items-center justify-center min-h-[52px] rounded-ezer bg-ezer-green text-white font-semibold hover:bg-ezer-green-dark transition-colors">S'inscrire</a>
                 <p class="text-sm text-ezer-muted">Un compte Ezer Home est nécessaire. Vous pourrez le créer à l'étape suivante.</p>
                 <p class="pt-3 border-t border-ezer-green-borderLight text-sm">Une question ? <a href="https://wa.me/22800000000" class="font-semibold text-ezer-green hover:underline">Écrivez-nous sur WhatsApp</a></p>
             </aside>
@@ -126,6 +124,6 @@
                 <span class="text-xs text-ezer-muted">Inscription</span>
                 <span class="font-semibold">Sur évaluation, à partir de 25 000 FCFA / séance</span>
             </div>
-            <a href="{{ url('/commande/recapitulatif') }}" class="ml-auto inline-flex items-center justify-center min-h-[48px] px-6 rounded-ezer bg-ezer-green text-white font-semibold">S'inscrire</a>
+            <a href="{{ url('/contact') }}" class="ml-auto inline-flex items-center justify-center min-h-[48px] px-6 rounded-ezer bg-ezer-green text-white font-semibold">S'inscrire</a>
         </div>
 </x-layouts.public>

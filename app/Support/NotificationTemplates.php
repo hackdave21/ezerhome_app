@@ -3,7 +3,6 @@
 namespace App\Support;
 
 use App\Mail\AssistanceNotification;
-use App\Mail\DonationReminder;
 use App\Mail\ListeningNotification;
 
 /**
@@ -32,13 +31,6 @@ class NotificationTemplates
                 ];
             }
         }
-
-        $entries[] = [
-            'base' => 'notif.donation.reminder',
-            'label' => 'Dons · rappel mensuel',
-            'subject' => DonationReminder::DEFAULTS['subject'],
-            'body' => DonationReminder::DEFAULTS['body'],
-        ];
 
         return $entries;
     }

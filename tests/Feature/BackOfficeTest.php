@@ -110,12 +110,12 @@ it('enregistre les modèles de notifications', function () {
 
 it('crée et met à jour une page de contenu', function () {
     Livewire::actingAs(bo('admin'))->test(AdminPages::class)
-        ->call('edit', 'a-quoi-servent-les-dons')
-        ->set('title', 'À quoi servent les dons')
+        ->call('edit', 'faq')
+        ->set('title', 'Foire aux questions')
         ->set('body', '<p>Transparence totale.</p>')
         ->call('save')->assertHasNoErrors();
 
-    $page = Page::where('slug', 'a-quoi-servent-les-dons')->first();
+    $page = Page::where('slug', 'faq')->first();
     expect($page)->not->toBeNull()->and($page->is_published)->toBeTrue()->and($page->body)->toContain('Transparence');
 });
 

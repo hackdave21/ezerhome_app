@@ -111,7 +111,7 @@
             <!-- SUPPRIMER -->
             <section aria-labelledby="pr-supprimer" class="flex flex-col gap-3">
                 <h2 id="pr-supprimer" class="text-xl font-semibold">Supprimer mon compte</h2>
-                <p>Votre compte, vos demandes et vos messages seront supprimés définitivement après un délai de [30 jours], pendant lequel vous pourrez changer d'avis. Les données de paiement sont conservées [durée légale].</p>
+                <p>Votre compte, vos demandes et vos messages seront supprimés définitivement après un délai de [30 jours], pendant lequel vous pourrez changer d'avis.</p>
                 <div class="flex flex-col gap-1.5 items-start">
                     @if ($suppressionDemandee)
                         <p class="font-semibold">Votre demande de suppression est en cours de traitement.</p>
