@@ -9,6 +9,7 @@ uses(RefreshDatabase::class);
 beforeEach(function () {
     $this->withoutVite();
     $this->seed(RolesAndPermissionsSeeder::class);
+    config(['features.phase2' => true]);
 });
 
 /** Compte interne avec 2FA confirmée (sinon le middleware 2FA redirige avant la vérification de rôle). */

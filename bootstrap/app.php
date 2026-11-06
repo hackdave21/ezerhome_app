@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\EnsureAccountIsActive;
 use App\Http\Middleware\EnsureListeningCharterSigned;
+use App\Http\Middleware\EnsurePhase2Enabled;
 use App\Http\Middleware\EnsureTwoFactorEnabled;
 use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Foundation\Application;
@@ -26,6 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'two-factor.required' => EnsureTwoFactorEnabled::class,
             'charter.listening' => EnsureListeningCharterSigned::class,
             'auth.session' => AuthenticateSession::class,
+            'phase2' => EnsurePhase2Enabled::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

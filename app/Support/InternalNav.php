@@ -57,6 +57,12 @@ class InternalNav
     {
         $config = self::SPACES[$space] ?? self::SPACES['comite'];
 
+        if (! config('features.phase2', false) && $space === 'admin') {
+            $config['nav'] = array_values(array_filter($config['nav'], function ($item) {
+                return ($item['id'] ?? null) !== 'dons';
+            }));
+        }
+
         $config['accueil'] = self::url($config['accueil']);
         $config['nav'] = array_map(fn ($item) => isset($item['route']) ? $item + ['url' => self::url($item['route'])] : $item, $config['nav']);
 

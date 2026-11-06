@@ -13,8 +13,14 @@ beforeEach(fn () => $this->withoutVite());
 it('affiche les pages publiques', function (string $url) {
     $this->get($url)->assertOk();
 })->with([
-    '/', '/a-propos', '/ecoute', '/formation', '/formation/exemple', '/coaching',
-    '/coaching/exemple', '/equipe', '/partenaires', '/a-quoi-servent-les-dons', '/contact',
+    '/', '/a-propos', '/ecoute', '/equipe', '/partenaires', '/contact',
+]);
+
+it('affiche les pages formation, coaching et usage des dons quand phase 2 est activée', function (string $url) {
+    config(['features.phase2' => true]);
+    $this->get($url)->assertOk();
+})->with([
+    '/formation', '/formation/exemple', '/coaching', '/coaching/exemple', '/a-quoi-servent-les-dons',
 ]);
 
 it("n'expose plus de page tarifs", function () {
@@ -58,6 +64,7 @@ it('sert les pages légales publiées et masque les autres', function () {
 });
 
 it('affiche le texte édité de la page « à quoi servent les dons »', function () {
+    config(['features.phase2' => true]);
     Page::create(['slug' => 'a-quoi-servent-les-dons', 'title' => 'Dons', 'body' => '<p>Texte édité</p>']);
 
     $this->get('/a-quoi-servent-les-dons')->assertOk()->assertSee('Texte édité', false);

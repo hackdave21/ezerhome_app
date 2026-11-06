@@ -24,18 +24,22 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'site.accueil')->name('accueil');
 Route::view('/a-propos', 'site.a-propos')->name('a-propos');
 Route::view('/ecoute', 'site.ecoute')->name('ecoute');
-Route::view('/formation', 'site.formations')->name('formation');
-Route::view('/formation/{slug}', 'site.formation-detail')->name('formation.show');
-Route::view('/coaching', 'site.coaching')->name('coaching');
-Route::view('/coaching/{slug}', 'site.coaching-detail')->name('coaching.show');
 Route::get('/charte', [CharterController::class, 'publique'])->name('charte');
 Route::get('/equipe', [SiteController::class, 'equipe'])->name('equipe');
 Route::get('/partenaires', [SiteController::class, 'partenaires'])->name('partenaires');
-Route::get('/a-quoi-servent-les-dons', [SiteController::class, 'usageDons'])->name('usage-dons');
 
-Route::get('/dons', [DonationController::class, 'create'])->name('dons');
-Route::post('/dons', [DonationController::class, 'store'])->middleware('throttle:10,1')->name('dons.store');
-Route::get('/dons/{payment:uuid}/instructions', [DonationController::class, 'instructions'])->name('dons.instructions');
+// Routes Phase 2 soumises au feature flag features.phase2
+Route::middleware('phase2')->group(function () {
+    Route::view('/formation', 'site.formations')->name('formation');
+    Route::view('/formation/{slug}', 'site.formation-detail')->name('formation.show');
+    Route::view('/coaching', 'site.coaching')->name('coaching');
+    Route::view('/coaching/{slug}', 'site.coaching-detail')->name('coaching.show');
+    Route::get('/a-quoi-servent-les-dons', [SiteController::class, 'usageDons'])->name('usage-dons');
+    Route::get('/dons', [DonationController::class, 'create'])->name('dons');
+    Route::post('/dons', [DonationController::class, 'store'])->middleware('throttle:10,1')->name('dons.store');
+    Route::get('/dons/{payment:uuid}/instructions', [DonationController::class, 'instructions'])->name('dons.instructions');
+    Route::view('/candidature', 'site.candidature')->name('candidature');
+});
 
 Route::get('/assistance', [AssistanceController::class, 'create'])->name('assistance');
 Route::post('/assistance', [AssistanceController::class, 'store'])->middleware('throttle:5,1')->name('assistance.store');
@@ -133,10 +137,20 @@ Route::middleware(['auth', 'auth.session', 'account.active', 'two-factor.require
         Route::get('/admin/ecoute/{listeningRequest}', [AdminListeningController::class, 'show'])->name('admin.ecoute.show');
     });
 
-    // Dons et paiements (Admin) : liste, confirmation manuelle, export comptable.
-    Route::middleware('can:donations.view')->group(function () {
+    // Dons et paiements (Admin) : liste, confirmation manuelle, export comptable (Phase 2).
+    Route::middleware(['can:donations.view', 'phase2'])->group(function () {
         Route::get('/admin/dons', [AdminDonationController::class, 'index'])->name('admin.dons');
         Route::get('/admin/dons/export', [AdminDonationController::class, 'export'])->name('admin.dons.export');
+    });
+
+    // Modules Phase 2 (Admin & Intervenant)
+    Route::middleware('phase2')->group(function () {
+        Route::view('/admin/candidatures', 'admin.candidatures')->name('admin.candidatures');
+        Route::view('/admin/reunions', 'admin.reunions')->name('admin.reunions');
+        Route::view('/intervenant/agenda', 'intervenant.agenda')->name('intervenant.agenda');
+        Route::view('/intervenant/messagerie', 'intervenant.messagerie')->name('intervenant.messagerie');
+        Route::view('/intervenant/offres', 'intervenant.offres')->name('intervenant.offres');
+        Route::view('/intervenant/inscrits', 'intervenant.inscrits')->name('intervenant.inscrits');
     });
 
     // Espace de travail du thérapeute / coach.

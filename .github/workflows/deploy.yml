@@ -32,6 +32,27 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
+      - name: Configuration de PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pdo_mysql, bcmath, fileinfo
+          coverage: none
+
+      - name: Installer les dependances Composer (production)
+        run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+
+      - name: Configuration de Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Compiler les assets frontend (Vite)
+        run: |
+          npm ci
+          npm run build
+
       - name: Preparer la cle SSH
         run: |
           mkdir -p ~/.ssh
@@ -39,16 +60,38 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p "${{ secrets.HOSTINGER_PORT || 22 }}" -H "${{ secrets.HOSTINGER_HOST }}" >> ~/.ssh/known_hosts
 
-      - name: Deployer sur Hostinger
+      - name: Synchroniser l'application par rsync vers Hostinger
         env:
           HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
           HOSTINGER_USER: ${{ secrets.HOSTINGER_USER }}
           HOSTINGER_PORT: ${{ secrets.HOSTINGER_PORT || 22 }}
           HOSTINGER_APP_DIR: ${{ secrets.HOSTINGER_APP_DIR }}
-          TARGET_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: |
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/id_ed25519 -p $HOSTINGER_PORT" \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.env' \
+            --exclude='storage/*.key' \
+            --exclude='storage/app/exports/*' \
+            --exclude='storage/app/medias/*' \
+            --exclude='storage/framework/cache/*' \
+            --exclude='storage/framework/sessions/*' \
+            --exclude='storage/framework/views/*' \
+            --exclude='storage/logs/*' \
+            --exclude='node_modules' \
+            --exclude='tests' \
+            ./ "$HOSTINGER_USER@$HOSTINGER_HOST:$HOSTINGER_APP_DIR/"
+
+      - name: Finaliser le deploiement sur le serveur Hostinger
+        env:
+          HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
+          HOSTINGER_USER: ${{ secrets.HOSTINGER_USER }}
+          HOSTINGER_PORT: ${{ secrets.HOSTINGER_PORT || 22 }}
+          HOSTINGER_APP_DIR: ${{ secrets.HOSTINGER_APP_DIR }}
         run: |
           ssh -i ~/.ssh/id_ed25519 -p "$HOSTINGER_PORT" "$HOSTINGER_USER@$HOSTINGER_HOST" \
-            "APP_DIR='$HOSTINGER_APP_DIR' BRANCH='main' TARGET_SHA='$TARGET_SHA' bash -s" \
+            "APP_DIR='$HOSTINGER_APP_DIR' bash -s" \
             < deploy/scripts/deploy-production.sh
 
       - name: Verifier la disponibilite
@@ -61,3 +104,4 @@ jobs:
           else
             echo "PRODUCTION_URL non defini : verification HTTP ignoree."
           fi
+

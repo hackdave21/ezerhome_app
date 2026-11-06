@@ -21,6 +21,7 @@ uses(RefreshDatabase::class);
 beforeEach(function () {
     $this->withoutVite();
     $this->seed(RolesAndPermissionsSeeder::class);
+    config(['features.phase2' => true]);
     Mail::fake();
 });
 
