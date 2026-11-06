@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\AssistanceStatus;
 use App\Enums\ListeningRequestStatus;
+use App\Enums\PaymentStatus;
 use App\Http\Controllers\Controller;
 use App\Models\AssistanceRequest;
 use App\Models\ListeningRequest;
+use App\Models\Payment;
 use Illuminate\Contracts\View\View;
 
 /** Tableau de bord Admin : vue de pilotage (phase 1). Aucun contenu sensible, seulement des volumes. */
@@ -27,6 +29,15 @@ class DashboardController extends Controller
                 AssistanceStatus::EnExamen->value,
                 AssistanceStatus::Acceptee->value,
             ])->count(),
+
+            'paiementsAConfirmer' => Payment::whereIn('status', [
+                PaymentStatus::Initie->value,
+                PaymentStatus::EnAttente->value,
+            ])->count(),
+
+            'donsDuMois' => (int) Payment::where('status', PaymentStatus::Paye->value)
+                ->whereBetween('paid_at', [now()->startOfMonth(), now()->endOfMonth()])
+                ->sum('amount'),
         ]);
     }
 }

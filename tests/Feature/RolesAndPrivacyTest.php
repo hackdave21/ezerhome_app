@@ -3,8 +3,11 @@
 use App\Jobs\ExportUserData;
 use App\Mail\DataExportReady;
 use App\Mail\OtpCodeMail;
+use App\Models\Charter;
+use App\Models\CharterSignature;
 use App\Models\DataExport;
 use App\Models\DeletionRequest;
+use App\Models\ListeningRequest;
 use App\Models\MediaAsset;
 use App\Models\User;
 use Database\Seeders\RolesAndPermissionsSeeder;
@@ -281,6 +284,38 @@ it('génère le fichier JSON, prévient sans contenu sensible et le rend téléc
 
     $this->actingAs($autre)->get("/espace/export/{$export->id}")->assertNotFound();
     $this->actingAs($user)->get("/espace/export/{$export->id}")->assertOk();
+});
+
+it('exporte aussi les demandes d\'écoute et les signatures de charte', function () {
+    Storage::fake('local');
+    Mail::fake();
+    $user = avecRole('consultant');
+    $demande = ListeningRequest::create([
+        'consultant_id' => $user->id,
+        'description' => 'Souffrance au travail',
+    ]);
+    $charte = Charter::create([
+        'type' => Charter::LISTENING,
+        'version' => 'v1',
+        'body' => 'Charte de test',
+        'published_at' => now(),
+    ]);
+    CharterSignature::create([
+        'user_id' => $user->id,
+        'charter_id' => $charte->id,
+        'signed_at' => now(),
+    ]);
+
+    $export = DataExport::create(['user_id' => $user->id]);
+    (new ExportUserData($export))->handle();
+
+    $contenu = json_decode(Storage::disk('local')->get($export->fresh()->path), true);
+
+    expect($contenu['demandes_ecoute'])->toHaveCount(1)
+        ->and($contenu['demandes_ecoute'][0]['reference'])->toBe($demande->shortRef())
+        ->and($contenu['demandes_ecoute'][0]['description'])->toBe('Souffrance au travail')
+        ->and($contenu['signatures_charte'])->toHaveCount(1)
+        ->and($contenu['signatures_charte'][0]['version'])->toBe('v1');
 });
 
 it('refuse un export expiré', function () {

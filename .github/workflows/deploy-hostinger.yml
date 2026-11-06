@@ -1,0 +1,63 @@
+name: Deploiement production (Hostinger)
+
+on:
+  # Ne deploie qu'apres une CI verte sur main.
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main]
+  # Permet de relancer un deploiement manuellement depuis l'onglet Actions.
+  workflow_dispatch:
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploiement production
+    runs-on: ubuntu-latest
+    environment: production
+
+    # Sur workflow_run : uniquement si la CI est verte sur main.
+    # Sur workflow_dispatch : toujours.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Preparer la cle SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.HOSTINGER_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "${{ secrets.HOSTINGER_PORT || 22 }}" -H "${{ secrets.HOSTINGER_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Deployer sur Hostinger
+        env:
+          HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
+          HOSTINGER_USER: ${{ secrets.HOSTINGER_USER }}
+          HOSTINGER_PORT: ${{ secrets.HOSTINGER_PORT || 22 }}
+          HOSTINGER_APP_DIR: ${{ secrets.HOSTINGER_APP_DIR }}
+          TARGET_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: |
+          ssh -i ~/.ssh/id_ed25519 -p "$HOSTINGER_PORT" "$HOSTINGER_USER@$HOSTINGER_HOST" \
+            "APP_DIR='$HOSTINGER_APP_DIR' BRANCH='main' TARGET_SHA='$TARGET_SHA' bash -s" \
+            < deploy/scripts/deploy-production.sh
+
+      - name: Verifier la disponibilite
+        if: success()
+        env:
+          APP_URL: ${{ secrets.PRODUCTION_URL }}
+        run: |
+          if [ -n "$APP_URL" ]; then
+            curl --fail --silent --show-error --retry 5 --retry-delay 10 "$APP_URL" > /dev/null
+          else
+            echo "PRODUCTION_URL non defini : verification HTTP ignoree."
+          fi

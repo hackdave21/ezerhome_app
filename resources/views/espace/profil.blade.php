@@ -96,7 +96,7 @@
             <!-- MES DONNÉES -->
             <section aria-labelledby="pr-donnees" class="flex flex-col gap-3">
                 <h2 id="pr-donnees" class="text-xl font-semibold">Mes données</h2>
-                <p>Recevez une copie de toutes les informations que nous détenons sur vous : profil, demandes, messages, inscriptions. Le fichier est prêt rapidement et reste téléchargeable 7 jours.</p>
+                <p>Recevez une copie de toutes les informations que nous détenons sur vous : profil, demandes d'écoute et signatures de charte. Le fichier est prêt rapidement et reste téléchargeable 7 jours.</p>
                 @if ($export?->isDownloadable())
                     <p><a href="{{ route('espace.export.download', $export) }}" class="font-semibold text-ezer-green hover:underline">Télécharger mon export (prêt le {{ $export->ready_at->locale('fr')->translatedFormat('j F Y') }})</a></p>
                 @elseif ($export && $export->ready_at === null)
@@ -111,7 +111,7 @@
             <!-- SUPPRIMER -->
             <section aria-labelledby="pr-supprimer" class="flex flex-col gap-3">
                 <h2 id="pr-supprimer" class="text-xl font-semibold">Supprimer mon compte</h2>
-                <p>Votre compte, vos demandes et vos messages seront supprimés définitivement après un délai de [30 jours], pendant lequel vous pourrez changer d'avis.</p>
+                <p>Votre compte et vos demandes d'écoute seront supprimés définitivement après un délai de [30 jours], pendant lequel vous pourrez changer d'avis.</p>
                 <div class="flex flex-col gap-1.5 items-start">
                     @if ($suppressionDemandee)
                         <p class="font-semibold">Votre demande de suppression est en cours de traitement.</p>

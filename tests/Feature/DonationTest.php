@@ -145,6 +145,23 @@ it('réserve les dons à l\'Admin et confirme via le composant', function () {
     expect($payment->fresh()->status)->toBe(PaymentStatus::Paye);
 });
 
+it('affiche les paiements à confirmer et les dons confirmés du mois sur le tableau de bord admin', function () {
+    $this->post('/dons', champsDon());
+    $admin = compteDon('admin');
+
+    $this->actingAs($admin)->get(route('admin.dashboard'))
+        ->assertOk()
+        ->assertViewHas('paiementsAConfirmer', 1)
+        ->assertViewHas('donsDuMois', 0);
+
+    app(DonationWorkflow::class)->confirmManual(Payment::first(), 'TX-1', $admin);
+
+    $this->get(route('admin.dashboard'))
+        ->assertOk()
+        ->assertViewHas('paiementsAConfirmer', 0)
+        ->assertViewHas('donsDuMois', 5000);
+});
+
 it('exporte un CSV sans nom pour les dons anonymes', function () {
     $this->post('/dons', champsDon(['donor_name' => 'Nominatif Visible']));
     $this->post('/dons', champsDon(['is_anonymous' => '1', 'donor_name' => 'Cache']));

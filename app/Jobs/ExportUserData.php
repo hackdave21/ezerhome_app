@@ -3,7 +3,9 @@
 namespace App\Jobs;
 
 use App\Mail\DataExportReady;
+use App\Models\CharterSignature;
 use App\Models\DataExport;
+use App\Models\ListeningRequest;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Mail;
@@ -36,7 +38,35 @@ class ExportUserData implements ShouldQueue
                 'derniere_activite' => $user->last_activity_at?->toIso8601String(),
             ],
             'roles' => $user->getRoleNames()->all(),
-            // Les demandes, messages et inscriptions s'ajouteront ici avec les modules concernés.
+
+            // Données de la phase 1 : demandes d'écoute et signatures de charte.
+            // Les messages et inscriptions s'ajouteront avec les modules de la phase 2.
+            'demandes_ecoute' => ListeningRequest::where('consultant_id', $user->id)
+                ->orderBy('id')
+                ->get()
+                ->map(fn (ListeningRequest $demande) => [
+                    'reference' => $demande->shortRef(),
+                    'statut' => $demande->status->label(),
+                    'urgence' => $demande->urgencyLabel(),
+                    'canal_prefere' => $demande->channelLabel(),
+                    'description' => $demande->description,
+                    'creee_le' => $demande->created_at?->toIso8601String(),
+                    'affectee_le' => $demande->assigned_at?->toIso8601String(),
+                    'acceptee_le' => $demande->accepted_at?->toIso8601String(),
+                    'cloturee_le' => $demande->closed_at?->toIso8601String(),
+                ])
+                ->all(),
+
+            'signatures_charte' => CharterSignature::where('user_id', $user->id)
+                ->with('charter')
+                ->orderBy('id')
+                ->get()
+                ->map(fn (CharterSignature $signature) => [
+                    'charte' => $signature->charter?->type,
+                    'version' => $signature->charter?->version,
+                    'signee_le' => $signature->signed_at?->toIso8601String(),
+                ])
+                ->all(),
         ];
 
         $path = 'exports/'.Str::uuid().'.json';

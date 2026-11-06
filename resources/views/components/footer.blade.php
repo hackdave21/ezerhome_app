@@ -9,16 +9,16 @@
                 ['label' => 'Formation', 'url' => url('/formation')],
                 ['label' => 'Coaching', 'url' => url('/coaching')],
                 ['label' => 'Assistance', 'url' => url('/assistance')],
+                ['label' => 'Faire un don', 'url' => url('/dons')],
             ]
         ],
         [
             'titre' => "L'association",
-            'liens' => array_values(array_filter([
+            'liens' => [
                 ['label' => 'À propos', 'url' => url('/a-propos')],
                 ['label' => 'Notre équipe', 'url' => url('/equipe')],
                 ['label' => 'Partenaires', 'url' => url('/partenaires')],
-                !$sobre ? ['label' => 'Devenir thérapeute ou coach', 'url' => url('/candidature')] : null,
-            ]))
+            ]
         ],
         [
             'titre' => 'Informations',

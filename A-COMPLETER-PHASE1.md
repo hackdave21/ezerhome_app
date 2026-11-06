@@ -14,18 +14,10 @@ Légende des responsables : 👤 **Client** · 🛠️ **Développeur** · ⚙�
 
 ### 1.1 Paiement en ligne — Mixx By Yas et Moov Money  🛠️ 👤
 
-**⚠️ EN PHASE 2 MAINTENANT** — La passerelle de paiement automatique est reportée à la Phase 2 (étape 2.7).
+**⚠️ REPORTÉ EN PHASE 2** — La passerelle de paiement automatique est reportée à la Phase 2 (étape 2.7).
 En Phase 1, nous conservons uniquement la confirmation manuelle via `ManualGateway`.
 
-- **En place** : l'architecture (`PaymentGateway`, `PaymentManager`) et la passerelle manuelle (`ManualGateway`).
-- **Manque** : ouverture des comptes marchands, implémentation des passerelles automatiques (reportées).
-
-**⚠️ EN PHASE 2 MAINTENANT** — La passerelle de paiement automatique est reportée à la Phase 2 (étape 2.7).
-En Phase 1, nous conservons uniquement la confirmation manuelle via `ManualGateway`.
-
-- **En place** : l'architecture (`PaymentGateway`, `PaymentManager`) et la passerelle manuelle (`ManualGateway`).
-- **Manque** : ouverture des comptes marchands, implémentation des passerelles automatiques (reportées).
-- **En place** : l'architecture finale (`PaymentGateway`, `PaymentManager`) et la passerelle
+- **En place** : l'architecture (`PaymentGateway`, `PaymentManager`) et la passerelle
   **manuelle** (`ManualGateway`) active. Un don crée un paiement `en_attente`, affiche les
   **instructions de versement** et attend la **confirmation Admin tracée**.
 - **Manque** :
@@ -73,7 +65,7 @@ En Phase 1, nous conservons uniquement la confirmation manuelle via `ManualGatew
   - **UptimeRobot** (disponibilité visée 99 %).
   - **Sauvegardes chiffrées** quotidiennes : `composer require spatie/laravel-backup`, copie
     hors serveur, et **test de restauration** (critère de recette, étape 1.12).
-  - Pages d'erreur 500 / 404 / 503 personnalisées.
+  - ✅ Pages d'erreur **404 / 500 / 503** personnalisées (autonomes, sans accès base de données).
 
 ---
 
@@ -100,7 +92,8 @@ aujourd'hui des **textes provisoires marqués entre crochets** `[...]`.
 
 ## 3. Configuration et déploiement  ⚙️
 
-Détail complet dans [phase1.md §1.12](./phase1.md) et [docs/STAGING.md](./docs/STAGING.md).
+Détail complet dans [phase1.md §1.12](./phase1.md), [docs/STAGING.md](./docs/STAGING.md) et
+[docs/DEPLOY-HOSTINGER.md](./docs/DEPLOY-HOSTINGER.md) pour la mise en production automatique.
 
 ### 3.1 Variables d'environnement de production (`.env`)
 - `APP_ENV=production`, **`APP_DEBUG=false`**, `APP_URL=https://…`, `LOG_LEVEL=warning`.
@@ -120,6 +113,8 @@ Détail complet dans [phase1.md §1.12](./phase1.md) et [docs/STAGING.md](./docs
   et envoie **HSTS** en production (middleware `SecurityHeaders`).
 - Pare-feu (22/80/443), SSH par clé, mises à jour de sécurité, `fail2ban` recommandé.
 - `php artisan optimize` au déploiement ; compression Brotli/Gzip.
+- ✅ **Déploiement continu Hostinger** : workflow GitHub Actions après CI verte sur `main`,
+  secrets à renseigner (cf. [docs/DEPLOY-HOSTINGER.md](./docs/DEPLOY-HOSTINGER.md)).
 
 ### 3.4 Comptes initiaux  ⚙️ 👤
 - Exécuter `RolesAndPermissionsSeeder` (idempotent).

@@ -8,6 +8,7 @@
         ['id' => 'formation', 'label' => 'Formation', 'url' => url('/formation')],
         ['id' => 'coaching', 'label' => 'Coaching', 'url' => url('/coaching')],
         ['id' => 'assistance', 'label' => 'Assistance', 'url' => url('/assistance'), 'badge' => 'Gratuit'],
+        ['id' => 'dons', 'label' => 'Dons', 'url' => url('/dons')],
         ['id' => 'contact', 'label' => 'Contact', 'url' => url('/contact')],
     ];
 

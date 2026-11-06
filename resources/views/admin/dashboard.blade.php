@@ -14,6 +14,14 @@
                 <span class="text-[13px] text-ezer-muted">Assistance en cours</span>
                 <span class="text-3xl font-semibold">{{ $assistanceEnCours }}</span>
             </a>
+            <a href="{{ route('admin.dons') }}" class="flex flex-col gap-1 p-5 border border-ezer-green-border rounded-ezer hover:bg-ezer-green-pale transition-colors">
+                <span class="text-[13px] text-ezer-muted">Paiements à confirmer</span>
+                <span class="text-3xl font-semibold">{{ $paiementsAConfirmer }}</span>
+            </a>
+            <a href="{{ route('admin.dons') }}" class="flex flex-col gap-1 p-5 border border-ezer-green-border rounded-ezer hover:bg-ezer-green-pale transition-colors">
+                <span class="text-[13px] text-ezer-muted">Dons confirmés ce mois</span>
+                <span class="text-3xl font-semibold">{{ number_format($donsDuMois, 0, ',', ' ') }} <span class="text-base font-normal text-ezer-muted">FCFA</span></span>
+            </a>
         </div>
     </div>
 </x-layouts.interne>
