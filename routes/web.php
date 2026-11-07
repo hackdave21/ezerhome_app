@@ -38,7 +38,6 @@ Route::middleware('phase2')->group(function () {
     Route::get('/dons', [DonationController::class, 'create'])->name('dons');
     Route::post('/dons', [DonationController::class, 'store'])->middleware('throttle:10,1')->name('dons.store');
     Route::get('/dons/{payment:uuid}/instructions', [DonationController::class, 'instructions'])->name('dons.instructions');
-    Route::view('/candidature', 'site.candidature')->name('candidature');
 });
 
 Route::get('/assistance', [AssistanceController::class, 'create'])->name('assistance');
@@ -141,16 +140,6 @@ Route::middleware(['auth', 'auth.session', 'account.active', 'two-factor.require
     Route::middleware(['can:donations.view', 'phase2'])->group(function () {
         Route::get('/admin/dons', [AdminDonationController::class, 'index'])->name('admin.dons');
         Route::get('/admin/dons/export', [AdminDonationController::class, 'export'])->name('admin.dons.export');
-    });
-
-    // Modules Phase 2 (Admin & Intervenant)
-    Route::middleware('phase2')->group(function () {
-        Route::view('/admin/candidatures', 'admin.candidatures')->name('admin.candidatures');
-        Route::view('/admin/reunions', 'admin.reunions')->name('admin.reunions');
-        Route::view('/intervenant/agenda', 'intervenant.agenda')->name('intervenant.agenda');
-        Route::view('/intervenant/messagerie', 'intervenant.messagerie')->name('intervenant.messagerie');
-        Route::view('/intervenant/offres', 'intervenant.offres')->name('intervenant.offres');
-        Route::view('/intervenant/inscrits', 'intervenant.inscrits')->name('intervenant.inscrits');
     });
 
     // Espace de travail du thérapeute / coach.
