@@ -1,2 +1,18 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Espaces privés et pages de connexion (déjà en noindex)
+Disallow: /admin
+Disallow: /espace
+Disallow: /comite
+Disallow: /intervenant
+Disallow: /verification
+Disallow: /login
+Disallow: /logout
+Disallow: /connexion
+Disallow: /mot-de-passe-oublie
+Disallow: /nouveau-mot-de-passe
+Disallow: /double-authentification
+Disallow: /medias
+
+Sitemap: https://ezerhome.org/sitemap.xml

@@ -1,4 +1,4 @@
-<x-layouts.public title="Instructions de versement — Ezer Home" active="">
+<x-layouts.public title="Instructions de versement — Ezer Home" active="" description="Instructions de versement pour finaliser votre don à Ezer Home.">
 
         <section class="bg-ezer-green-light">
             <div class="max-w-[1400px] mx-auto px-6 lg:px-12 py-8 lg:py-12 flex flex-col gap-3">

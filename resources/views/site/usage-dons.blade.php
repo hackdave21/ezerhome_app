@@ -1,4 +1,4 @@
-<x-layouts.public title="À quoi servent les dons — Ezer Home" active="">
+<x-layouts.public title="À quoi servent les dons — Ezer Home" active="" description="Découvrez concrètement à quoi servent les dons reçus par Ezer Home et l'impact de votre soutien.">
 
         <section class="bg-ezer-green-light">
             <div class="max-w-[1400px] mx-auto px-6 lg:px-12 py-8 lg:py-12 flex flex-col gap-3">

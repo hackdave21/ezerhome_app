@@ -1,4 +1,4 @@
-<x-layouts.public title="Coaching — Ezer Home" active="coaching">
+<x-layouts.public title="Coaching — Ezer Home" active="coaching" description="Coaching Ezer Home pour retrouver confiance, clarté et repères, avec un accompagnement personnalisé à Lomé ou en ligne.">
 
         <!-- BANDEAU -->
         <section class="bg-ezer-green-light">

@@ -1,4 +1,4 @@
-<x-layouts.public title="Coaching — Confiance en soi — Ezer Home" active="coaching">
+<x-layouts.public title="Coaching — Confiance en soi — Ezer Home" active="coaching" description="Coaching confiance en soi et accompagnement personnalisé proposé par Ezer Home, à Lomé ou en ligne.">
 
         <section class="bg-ezer-green-light">
             <div class="max-w-[1400px] mx-auto px-6 lg:px-12 py-8 lg:py-12 flex flex-col gap-3">

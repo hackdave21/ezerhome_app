@@ -1,4 +1,4 @@
-<x-layouts.public title="Écoute — Ezer Home" active="ecoute" :sobre-footer="true">
+<x-layouts.public title="Écoute — Ezer Home" active="ecoute" :sobre-footer="true" description="Un espace d'écoute gratuite et confidentielle, sur place à Lomé ou en ligne, pour déposer ce qui pèse sans jugement.">
 
         <!-- BANDEAU -->
         <section class="bg-ezer-green-light">

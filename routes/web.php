@@ -27,6 +27,7 @@ Route::view('/ecoute', 'site.ecoute')->name('ecoute');
 Route::get('/charte', [CharterController::class, 'publique'])->name('charte');
 Route::get('/equipe', [SiteController::class, 'equipe'])->name('equipe');
 Route::get('/partenaires', [SiteController::class, 'partenaires'])->name('partenaires');
+Route::get('/sitemap.xml', [SiteController::class, 'sitemap'])->name('sitemap');
 
 // Routes Phase 2 soumises au feature flag features.phase2
 Route::middleware('phase2')->group(function () {

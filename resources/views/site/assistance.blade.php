@@ -1,4 +1,4 @@
-<x-layouts.public title="Demander une assistance — Ezer Home" active="assistance">
+<x-layouts.public title="Demander une assistance — Ezer Home" active="assistance" description="Demandez une assistance ponctuelle auprès du comité Ezer Home : accueil, écoute et soutien adaptés à votre situation.">
 
         <section class="bg-ezer-green-light">
             <div class="max-w-[1400px] mx-auto px-6 lg:px-12 py-8 lg:py-12 flex flex-col gap-3">

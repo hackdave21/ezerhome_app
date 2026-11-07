@@ -6,6 +6,7 @@ use App\Models\OrgMember;
 use App\Models\Page;
 use App\Models\Partner;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Response;
 
 class SiteController extends Controller
 {
@@ -50,6 +51,39 @@ class SiteController extends Controller
         return view('site.partenaires', [
             'partenaires' => Partner::published()->with('logo')->get(),
         ]);
+    }
+
+    /** Plan du site pour les moteurs de recherche. */
+    public function sitemap(): Response
+    {
+        $urls = [
+            ['loc' => url('/'), 'changefreq' => 'weekly', 'priority' => '1.0'],
+            ['loc' => url('/a-propos'), 'changefreq' => 'monthly', 'priority' => '0.8'],
+            ['loc' => url('/ecoute'), 'changefreq' => 'monthly', 'priority' => '0.9'],
+            ['loc' => url('/charte'), 'changefreq' => 'yearly', 'priority' => '0.6'],
+            ['loc' => url('/equipe'), 'changefreq' => 'monthly', 'priority' => '0.7'],
+            ['loc' => url('/partenaires'), 'changefreq' => 'monthly', 'priority' => '0.6'],
+            ['loc' => url('/assistance'), 'changefreq' => 'monthly', 'priority' => '0.9'],
+            ['loc' => url('/contact'), 'changefreq' => 'yearly', 'priority' => '0.7'],
+            ['loc' => url('/contact/institutionnel'), 'changefreq' => 'yearly', 'priority' => '0.5'],
+        ];
+
+        if (config('features.phase2', false)) {
+            $urls[] = ['loc' => url('/formation'), 'changefreq' => 'monthly', 'priority' => '0.8'];
+            $urls[] = ['loc' => url('/coaching'), 'changefreq' => 'monthly', 'priority' => '0.8'];
+            $urls[] = ['loc' => url('/a-quoi-servent-les-dons'), 'changefreq' => 'monthly', 'priority' => '0.6'];
+            $urls[] = ['loc' => url('/dons'), 'changefreq' => 'monthly', 'priority' => '0.7'];
+        }
+
+        foreach (array_keys(self::LEGAL) as $slug) {
+            if (Page::published($slug) !== null) {
+                $urls[] = ['loc' => route('legal', $slug), 'changefreq' => 'yearly', 'priority' => '0.4'];
+            }
+        }
+
+        return response()
+            ->view('sitemap', ['urls' => $urls])
+            ->header('Content-Type', 'application/xml; charset=UTF-8');
     }
 
     /**

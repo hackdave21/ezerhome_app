@@ -1,4 +1,4 @@
-<x-layouts.public title="Suivre ma demande — Ezer Home" active="assistance">
+<x-layouts.public title="Suivre ma demande — Ezer Home" active="assistance" description="Suivez l'avancement de votre demande d'assistance auprès d'Ezer Home avec votre numéro de suivi.">
 
         <section class="bg-ezer-green-light">
             <div class="max-w-[1400px] mx-auto px-6 lg:px-12 py-8 lg:py-12 flex flex-col gap-3">

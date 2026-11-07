@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#187d50">
+    <title>Hors ligne — Ezer Home</title>
+    <style>
+        :root { --green: #187d50; --dark: #0e1c03; --muted: #5b6656; --pale: #e9f7f0; }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 24px; background: var(--pale); color: var(--dark);
+            font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+        }
+        .card {
+            background: #fff; border: 1px solid #c8dccf; border-radius: 12px;
+            max-width: 460px; width: 100%; padding: 32px; text-align: center;
+            box-shadow: 0 10px 30px rgba(14, 28, 3, 0.08);
+        }
+        img { width: 150px; max-width: 70%; height: auto; margin-bottom: 18px; }
+        h1 { font-size: 22px; margin: 0 0 10px; }
+        p { color: var(--muted); line-height: 1.6; margin: 0 0 22px; }
+        a {
+            display: inline-block; background: var(--green); color: #fff; text-decoration: none;
+            font-weight: 600; padding: 13px 22px; border-radius: 12px;
+        }
+        a:active { background: #12603d; }
+    </style>
+</head>
+<body>
+    <main class="card">
+        <img src="/assets/images/Logo_Ezer-01.png" alt="Ezer Home">
+        <h1>Vous êtes hors ligne</h1>
+        <p>Votre connexion Internet semble interrompue. Vérifiez votre réseau puis réessayez.</p>
+        <a href="/">Réessayer</a>
+    </main>
+</body>
+</html>

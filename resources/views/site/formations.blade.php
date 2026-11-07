@@ -1,4 +1,4 @@
-<x-layouts.public title="Formations — Ezer Home" active="formation">
+<x-layouts.public title="Formations — Ezer Home" active="formation" description="Formations Ezer Home à l'écoute active et à la relation d'aide, pour développer des compétences humaines concrètes.">
 
         <!-- BANDEAU -->
         <section class="bg-ezer-green-light">

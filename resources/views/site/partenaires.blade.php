@@ -1,4 +1,4 @@
-<x-layouts.public title="Nos partenaires — Ezer Home" active="a-propos">
+<x-layouts.public title="Nos partenaires — Ezer Home" active="a-propos" description="Les partenaires d'Ezer Home qui soutiennent l'accueil, l'écoute et l'accompagnement à Lomé et en ligne.">
 
         <section class="bg-ezer-green-light">
             <div class="max-w-[1400px] mx-auto px-6 lg:px-12 py-8 lg:py-12 flex flex-col gap-3">

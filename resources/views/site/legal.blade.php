@@ -1,4 +1,4 @@
-<x-layouts.public :title="$page->title.' — Ezer Home'" active="">
+<x-layouts.public :title="$page->title.' — Ezer Home'" active="" :description="'Informations légales et confidentialité : '.$page->title">
     <div id="lg-haut"></div>
 
     <section class="bg-ezer-green-light">

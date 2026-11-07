@@ -1,4 +1,4 @@
-<x-layouts.public title="Notre équipe — Ezer Home" active="a-propos">
+<x-layouts.public title="Notre équipe — Ezer Home" active="a-propos" description="Rencontrez l'équipe d'Ezer Home : écoutants, formateurs, coachs et bénévoles engagés au service des personnes.">
 
         <section class="bg-ezer-green-light">
             <div class="max-w-[1400px] mx-auto px-6 lg:px-12 py-8 lg:py-12 flex flex-col gap-3">

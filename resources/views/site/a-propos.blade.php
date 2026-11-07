@@ -1,4 +1,4 @@
-<x-layouts.public title="À propos d'Ezer Home" active="a-propos">
+<x-layouts.public title="À propos d'Ezer Home" active="a-propos" description="Découvrez Ezer Home, son approche, son parcours et sa mission d'accueil, d'écoute et d'accompagnement à Lomé et en ligne.">
 
         <section class="bg-ezer-green-light">
             <div class="max-w-[1400px] mx-auto px-6 lg:px-12 py-8 lg:py-12 flex flex-col gap-3">

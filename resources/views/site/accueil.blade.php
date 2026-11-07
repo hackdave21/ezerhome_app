@@ -1,4 +1,4 @@
-<x-layouts.public title="Accueil — Ezer Home" active="accueil">
+<x-layouts.public title="Accueil — Ezer Home" active="accueil" description="Ezer Home accueille, écoute et accompagne à Lomé ou en ligne : écoute gratuite et confidentielle, formations, coaching et assistance.">
 
         <!-- SECTION 1 : HERO & ACCROCHE -->
         <section class="bg-ezer-green-light">

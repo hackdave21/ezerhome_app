@@ -1,4 +1,4 @@
-<x-layouts.public title="Nous contacter — Ezer Home" active="contact">
+<x-layouts.public title="Nous contacter — Ezer Home" active="contact" description="Contactez Ezer Home par téléphone, email ou WhatsApp pour l'écoute, les formations, le coaching ou l'assistance.">
 
         <section class="bg-ezer-green-light">
             <div class="max-w-[1400px] mx-auto px-6 lg:px-12 py-8 lg:py-12 flex flex-col gap-3">

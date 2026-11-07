@@ -1,4 +1,4 @@
-<x-layouts.public title="La charte d'écoute — Ezer Home" active="ecoute">
+<x-layouts.public title="La charte d'écoute — Ezer Home" active="ecoute" description="La charte d'écoute d'Ezer Home : les engagements de confidentialité, de respect et d'accompagnement envers chaque personne.">
     <section class="bg-ezer-green-light">
         <div class="max-w-[1400px] mx-auto px-6 lg:px-12 py-8 lg:py-12 flex flex-col gap-3">
             <nav aria-label="Fil d'Ariane" class="text-sm">

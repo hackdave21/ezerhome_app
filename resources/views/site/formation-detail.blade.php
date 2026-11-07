@@ -1,4 +1,4 @@
-<x-layouts.public title="Formation — Écoute active et relation d'aide — Ezer Home" active="formation">
+<x-layouts.public title="Formation — Écoute active et relation d'aide — Ezer Home" active="formation" description="Formation Ezer Home à l'écoute active et à la relation d'aide : programme, objectifs et inscription.">
 
         <!-- BANDEAU -->
         <section class="bg-ezer-green-light">
